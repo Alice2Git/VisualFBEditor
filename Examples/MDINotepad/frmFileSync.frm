@@ -1236,7 +1236,7 @@ Private Sub frmFileSyncType.rbtnSmall_Click(ByRef Sender As RadioButton)
 End Sub
 
 Private Sub frmFileSyncType.ProgressBar1_Click(ByRef Sender As Control)
-	Dim b As UString = cmbexBPath.Text
+	Dim b As UStringX = cmbexBPath.Text
 	cmbexBPath.Text = cmbexAPath.Text
 	cmbexAPath.Text = b
 End Sub

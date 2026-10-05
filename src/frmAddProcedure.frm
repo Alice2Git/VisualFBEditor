@@ -626,7 +626,7 @@ Private Sub frmAddProcedureType.cmdOK_Click(ByRef Sender As Control)
 	If Not bInsideType Then
 		tb->txtCode.InsertLine i, ""
 		If txtDescription.Text <> "" Then
-			Dim As UString res()
+			Dim As UStringX res()
 			Split(txtDescription.Text, Chr(13) & Chr(10), res())
 			q1 = UBound(res) + 1
 			For j As Integer = 0 To UBound(res)
@@ -704,7 +704,7 @@ Private Sub frmAddProcedureType.cmdOK_Click(ByRef Sender As Control)
 				End If
 			End If
 			If txtDescription.Text <> "" Then
-				Dim As UString res()
+				Dim As UStringX res()
 				Split(txtDescription.Text, Chr(13) & Chr(10), res())
 				For j As Integer = 0 To UBound(res)
 					ptxtCode->InsertLine LineToAdd + q2 + j, SpaceStr & !"\t'" & res(j)
@@ -799,7 +799,7 @@ End Sub
 
 Private Sub frmAddProcedureType.txtParameters_Change(ByRef Sender As TextBox)
 	If cboType.ItemIndex <> 0 Then
-		Dim As UString Parameters = Trim(txtParameters.Text)
+		Dim As UStringX Parameters = Trim(txtParameters.Text)
 		If StartsWith(Parameters, "(") AndAlso EndsWith(Parameters, ")") Then
 			Parameters = Trim(Mid(Parameters, 2, Len(Parameters) - 2))
 		End If

@@ -290,7 +290,7 @@ Declare Function GetQuitThread(Project As ProjectElement Ptr, tb As TabWindow Pt
 
 Common Shared As PopupMenu Ptr pmnuCode
 
-Declare Function GetResNamePath(ByRef ResName As WString, ByRef ResourceFile As WString) As UString
+Declare Function GetResNamePath(ByRef ResName As WString, ByRef ResourceFile As WString) As UStringX
 	
 Declare Function FileNameExists(tn As TreeNode Ptr, ByRef FileName As WString) As TreeNode Ptr
 
@@ -430,13 +430,13 @@ Declare Sub GetIncludeFiles(ByRef Content As EditControlContent, Project As Proj
 
 Declare Function GetIconName(ByRef FileName As WString, ppe As ProjectElement Ptr = 0) As String
 
-Declare Function GetFirstCompileLine(ByRef FileName As WString, ByRef Project As ProjectElement Ptr, CompileLine As UString, ForWindows As Boolean = False) As UString
+Declare Function GetFirstCompileLine(ByRef FileName As WString, ByRef Project As ProjectElement Ptr, CompileLine As UStringX, ForWindows As Boolean = False) As UStringX
 
 Declare Function GetParentNode(tn As TreeNode Ptr) As TreeNode Ptr
 
-Declare Function GetMainFile(bSaveTab As Boolean = False, ByRef Project As ProjectElement Ptr = 0, ByRef ProjectNode As TreeNode Ptr = 0, WithoutMainNode As Boolean = False, FromProject As Boolean = False) As UString
+Declare Function GetMainFile(bSaveTab As Boolean = False, ByRef Project As ProjectElement Ptr = 0, ByRef ProjectNode As TreeNode Ptr = 0, WithoutMainNode As Boolean = False, FromProject As Boolean = False) As UStringX
 
-Declare Function GetResourceFile(WithoutMainNode As Boolean = False, ByRef FirstLine As WString = "", ProjectNode_ As TreeNode Ptr = 0) As UString
+Declare Function GetResourceFile(WithoutMainNode As Boolean = False, ByRef FirstLine As WString = "", ProjectNode_ As TreeNode Ptr = 0) As UStringX
 
 Declare Sub SetCodeVisible(tb As TabWindow Ptr)
 

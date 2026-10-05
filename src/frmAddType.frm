@@ -427,7 +427,7 @@ Private Sub frmAddTypeType.cmdOK_Click(ByRef Sender As Control)
 	If Not bInsideType Then
 		tb->txtCode.InsertLine i, ""
 		If txtDescription.Text <> "" Then
-			Dim As UString res()
+			Dim As UStringX res()
 			Split(txtDescription.Text, Chr(13) & Chr(10), res())
 			q1 = UBound(res) + 1
 			For j As Integer = 0 To UBound(res)
@@ -519,7 +519,7 @@ Private Sub frmAddTypeType.cmdOK_Click(ByRef Sender As Control)
 				End If
 			End If
 			If txtDescription.Text <> "" Then
-				Dim As UString res()
+				Dim As UStringX res()
 				Split(txtDescription.Text, Chr(13) & Chr(10), res())
 				For j As Integer = 0 To UBound(res)
 					ptxtCode->InsertLine LineToAdd + q2 + j, SpaceStr & IIf(bAddSpaces, !"\t", "") & "'" & res(j)

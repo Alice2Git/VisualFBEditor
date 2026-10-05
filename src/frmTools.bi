@@ -58,7 +58,7 @@ Enum LoadTypes
 End Enum
 
 Type UserToolType Extends ToolType
-	WorkingFolder As UString
+	WorkingFolder As UStringX
 	Accelerator As String
 	LoadType As LoadTypes
 	WaitComplete As Boolean

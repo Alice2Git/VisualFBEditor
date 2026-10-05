@@ -1214,7 +1214,7 @@ End Sub
 
 Sub AddToComboFileName(ByRef FileName As WString)
 	With fProjectProperties
-		Dim As UString Text = GetFileName(FileName)
+		Dim As UStringX Text = GetFileName(FileName)
 		If EndsWith(LCase(Text), ".rc") OrElse EndsWith(LCase(Text), ".res") Then
 			.cboResourceFile.AddItem Text
 			.ResourceFiles.Add Text, FileName
@@ -1361,8 +1361,8 @@ Public Sub frmProjectProperties.RefreshProperties()
 				If Not EndsWith(*ppe->FileName, ".vfp") AndAlso FileExists(*ppe->FileName & "/local.properties") Then
 					Dim As Integer Fn = FreeFile_
 					Open *ppe->FileName & "/local.properties" For Input As #Fn
-					Dim SDKDir As UString
-					Dim NDKDir As UString
+					Dim SDKDir As UStringX
+					Dim NDKDir As UStringX
 					Dim pBuff As WString Ptr
 					Dim As Integer FileSize
 					FileSize = LOF(Fn)
@@ -1385,7 +1385,7 @@ Public Sub frmProjectProperties.RefreshProperties()
 				If Not EndsWith(*ppe->FileName, ".vfp") AndAlso FileExists(*ppe->FileName & "/gradle.properties") Then
 					Dim As Integer Fn = FreeFile_
 					Open *ppe->FileName & "/gradle.properties" For Input As #Fn
-					Dim JavaHome As UString
+					Dim JavaHome As UStringX
 					Dim pBuff As WString Ptr
 					Dim As Integer FileSize
 					FileSize = LOF(Fn)

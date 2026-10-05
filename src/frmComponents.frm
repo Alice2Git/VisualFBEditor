@@ -351,7 +351,7 @@ Private Sub frmComponentsType.Form_Create(ByRef Sender As Control)
 			If f <> "." AndAlso f <> ".." Then
 				Dim As IniFile ini
 				ini.Load ExePath & Slash & "Controls" & Slash & f & Slash & "Settings.ini"
-				Dim FileName As UString = ini.ReadString("Setup", LibKey)
+				Dim FileName As UStringX = ini.ReadString("Setup", LibKey)
 				If FileName <> "" Then
 					chlControls.AddItem ini.ReadString("Setup", "Name")
 					Paths.Add ExePath & Slash & "Controls" & Slash & f & Slash & FileName
@@ -387,7 +387,7 @@ Private Sub frmComponentsType.cmdBrowse_Click(ByRef Sender As Control)
 		End If
 		Dim As IniFile ini
 		ini.Load GetFolderName(OpenD.FileName) & "Settings.ini"
-		Dim FileName As UString = ini.ReadString("Setup", LibKey)
+		Dim FileName As UStringX = ini.ReadString("Setup", LibKey)
 		If FileName = "" Then
 			MsgBox "Not selected " & LibKey & " in Settings.ini file!"
 			Exit Sub
@@ -418,7 +418,7 @@ Private Sub frmComponentsType.chkSelectedItemsOnly_Click(ByRef Sender As CheckBo
 				If f <> "." AndAlso f <> ".." Then
 					Dim As IniFile ini
 					ini.Load ExePath & Slash & "Controls" & Slash & f & Slash & "Settings.ini"
-					Dim FileName As UString = ini.ReadString("Setup", LibKey)
+					Dim FileName As UStringX = ini.ReadString("Setup", LibKey)
 					If FileName <> "" Then
 						If Not Paths.Contains(ExePath & Slash & "Controls" & Slash & f & Slash & FileName) Then
 							chlControls.AddItem ini.ReadString("Setup", "Name")

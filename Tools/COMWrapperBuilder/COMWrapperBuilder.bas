@@ -191,8 +191,8 @@ Using My.Sys.Forms
 	App.Run
 '#End Region
 
-Function WithoutQuotes(ByRef Path As WString) As UString
-	Dim As UString NewPath = Path
+Function WithoutQuotes(ByRef Path As WString) As UStringX
+	Dim As UStringX NewPath = Path
 	If NewPath.StartsWith("""") Then NewPath = Mid(Path, 2)
 	If NewPath.EndsWith("""") Then NewPath = Left(NewPath, Len(NewPath) - 1)
 	Return NewPath
@@ -238,7 +238,7 @@ Private Sub frmCOMWrapperBuilder.cmdPathSource_Click(ByRef Sender As Control)
 	End If
 End Sub
 
-Function GetFolderName(ByRef FileName As WString) As UString
+Function GetFolderName(ByRef FileName As WString) As UStringX
 	Dim Pos1 As Long = InStrRev(FileName, "\")
 	If Pos1 > 0 Then
 		Return Left(FileName, Pos1)
@@ -255,14 +255,14 @@ Type Method
 	Name As WString * 100
 	MethodType As MethodTypes
 	ParamsCount As Integer
-	ParamsText As UString
+	ParamsText As UStringX
 End Type
 
 Declare Sub AddFunctions(ByRef Functions As WStringList, ByRef FLine As WString, bFirst As Boolean)
 
-Function GetParams(ByRef Functions As WStringList, ByRef FLine As WString, ByRef bSet As Boolean, ByRef bFirst As Boolean, ByRef pCount As Integer) As UString
+Function GetParams(ByRef Functions As WStringList, ByRef FLine As WString, ByRef bSet As Boolean, ByRef bFirst As Boolean, ByRef pCount As Integer) As UStringX
 	Dim As Boolean bBracket = StartsWith(FLine, "("), bQuote
-	Dim As UString Params
+	Dim As UStringX Params
 	Dim As Integer t, bCount
 	pCount = 0
 	bSet = False
@@ -471,7 +471,7 @@ Private Sub frmCOMWrapperBuilder.cmdRun_Click(ByRef Sender As Control)
 			For i As Integer = 0 To Lines.Count - 1
 				FLine = @Lines.Item(i)
 				If StartsWith(LCase(Trim(*FLine, Any !"\t ")), "dim ") Then
-					Dim As UString res(Any)
+					Dim As UStringX res(Any)
 					SLine = Trim(LCase(Mid(Trim(*FLine, Any !"\t "), 5)), Any !"\t ")
 					If StartsWith(SLine, "as ") Then
 						SLine = Trim(Mid(SLine, 4), Any !"\t ")

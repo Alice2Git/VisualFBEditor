@@ -37,9 +37,9 @@ Using My.Sys.Forms
 		Dim As OpenFileDialog OpenD
 		Dim As FolderBrowserDialog BrowseD
 		Dim As Boolean ChooseFolder, SetFileNameToVersion, WithoutVersion, WithoutCommandLine, WithExtensions, WithType, WithKey, ForConfiguration
-		Dim As UString ExeFileName
+		Dim As UStringX ExeFileName
 		Dim As ComboBoxEdit cboType
-		Dim As UString cboTypeText, txtCommandLineText, txtExtensionsText
+		Dim As UStringX cboTypeText, txtCommandLineText, txtExtensionsText
 		Dim As Panel hbxPath, hbxVersion, hbxCommandLine, hbxCommands
 		Dim As Panel VerticalBox1
 	End Type

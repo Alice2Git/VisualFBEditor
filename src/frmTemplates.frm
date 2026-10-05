@@ -352,7 +352,7 @@ Private Sub frmTemplates.cmdOK_Click(ByRef Sender As Control)
 					Me.BringToFront
 				Else
 					SelectedTemplate = ExePath & Slash & "Templates" & Slash & Templates.Item(lvTemplates.SelectedItemIndex)
-					Dim As UString TemplateFolderName = ..Left(SelectedTemplate, Len(SelectedTemplate) - 4)
+					Dim As UStringX TemplateFolderName = ..Left(SelectedTemplate, Len(SelectedTemplate) - 4)
 					SelectedFolder = GetFullPath(txtSaveLocation.Text)
 					FolderCopy TemplateFolderName, SelectedFolder
 					Dim As WString * MAX_PATH SrcPath, DestPath
@@ -592,7 +592,7 @@ Private Sub frmTemplates.cmdChange_Click(ByRef Sender As Control)
 			pfPath->ChooseFolder = True
 		End If
 		pfPath->txtPath.Text = lvRecent.SelectedItem->Text(1)
-		Dim As UString Path
+		Dim As UStringX Path
 		If pfPath->ShowModal(Me) = ModalResults.OK Then
 			Path = pfPath->txtPath.Text
 		Else
@@ -628,7 +628,7 @@ Private Sub frmTemplates.cmdAdd_Click(ByRef Sender As Control)
 		pfPath->ChooseFolder = True
 	End If
 	pfPath->txtPath.Text = ""
-	Dim As UString Path
+	Dim As UStringX Path
 	If pfPath->ShowModal(Me) = ModalResults.OK Then
 		Path = pfPath->txtPath.Text
 	Else

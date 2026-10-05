@@ -668,7 +668,7 @@ Private Sub frmFind.ReplaceInProj(ByRef tSearch As WString="", ByRef tReplace As
 	
 	If LCase(tML) = LCase(tReplace) Then
 		Fn = FreeFile_
-		Dim As UString LanguagePath = GetUserDataPath("Languages.txt")
+		Dim As UStringX LanguagePath = GetUserDataPath("Languages.txt")
 		If LanguagePath <> "" AndAlso Open(LanguagePath For Output Encoding "utf-8" As #Fn) = 0 Then
 			Print #Fn, *BuffOut
 		ElseIf LanguagePath <> "" Then
@@ -1069,7 +1069,7 @@ Private Sub frmFind.Form_Create(ByRef Sender As Control)
 End Sub
 
 Private Sub frmFind.Form_Show(ByRef Sender As Form)
-	Dim As UString SelText
+	Dim As UStringX SelText
 	If ptabCode Then
 		Dim As TabWindow Ptr tb = Cast(TabWindow Ptr, ptabCode->SelectedTab)
 		If tb Then

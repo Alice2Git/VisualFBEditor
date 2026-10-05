@@ -55,7 +55,7 @@
 		Dim As CommandButton cmdOK, cmdCancel, cmdSaveLocation, cmdClear, cmdRemove, cmdChange, cmdAdd
 		Dim As WStringList Templates
 		Dim As Boolean OnlyFiles, RecentChanged
-		Dim As UString SelectedTemplate, SelectedFile, SelectedFolder
+		Dim As UStringX SelectedTemplate, SelectedFile, SelectedFolder
 		Dim As OpenFileControl OpenFileControl1
 		Dim As Panel pnlBottom, pnlSaveLocation, pnlRecent
 		Dim As Label lblSaveLocation

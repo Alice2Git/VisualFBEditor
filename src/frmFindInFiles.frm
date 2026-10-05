@@ -511,7 +511,7 @@ Private Sub frmFindInFiles.ReplaceInFile(ByRef Path As WString ="", ByRef tSearc
 	txtReplace.Text = ""
 	If LCase(tML) = LCase(tReplace) Then
 		Fn = FreeFile_
-		Dim As UString LanguagePath = GetUserDataPath("Languages.txt")
+		Dim As UStringX LanguagePath = GetUserDataPath("Languages.txt")
 		If LanguagePath <> "" AndAlso Open(LanguagePath For Output Encoding "utf-8" As #Fn) = 0 Then
 			Print #Fn, *BuffOut
 		ElseIf LanguagePath <> "" Then
