@@ -28,11 +28,43 @@ not investigated, since 32-bit is not needed.
 The components in `Controls/` also use `UString` (renamed in their sources) but were not
 recompiled; they may need a rebuild with FBC-Modern to work with the new `mff64.dll`.
 
-## Command used (Windows)
+## Folder layout
 
-MyFbFramework cloned next to this repo (`..\MyFbFramework`, branch `fbc-modern`):
+MyFbFramework is cloned **twice**, both on branch `fbc-modern` of
+[Alice2Git/MyFbFramework](https://github.com/Alice2Git/MyFbFramework):
+
+```
+V:\ProiecteClaude\
+├─ MyFbFramework\                      separate project (framework work happens here)
+├─ VisualFBEditor\
+│  └─ Controls\MyFbFramework\          second clone, used by the editor at run time
+└─ FBC-Modern\                         compiler, read-only
+```
+
+- `Controls\MyFbFramework` is the standard VisualFBEditor layout: the editor loads the
+  designer library from `Controls\MyFbFramework\mff64.dll`, and the `MFFPath` setting points
+  there. The folder is ignored by this repo's `.gitignore`.
+- The two clones are separate: a change made in one reaches the other only through
+  commit + push, then `git pull` in the other.
+
+```bat
+git clone -b fbc-modern https://github.com/Alice2Git/MyFbFramework.git Controls\MyFbFramework
+```
+
+## Command used (Windows)
 
 ```bat
 cd src
-fbc64.exe "VisualFBEditor.bas" -s gui -gen gcc -Wc -O2 -x "../VisualFBEditor64.exe" "VisualFBEditor.rc" -i "..\..\MyFbFramework"
+fbc64.exe "VisualFBEditor.bas" -s gui -gen gcc -Wc -O2 -x "../VisualFBEditor64.exe" "VisualFBEditor.rc" -i "..\Controls\MyFbFramework"
 ```
+
+`VisualFBEditor64.exe` in this commit was built with `-i "..\..\MyFbFramework"` (the separate
+clone), at the same MyFbFramework commit (`d475752`) as `Controls\MyFbFramework`.
+
+## Tested
+
+2026-10-05: `VisualFBEditor64.exe` starts, the form designer and the code editor work.
+The only error was "compiler not found", because the compiler paths in
+`Settings\VisualFBEditor64.ini` point to folders that do not exist on this machine; that is expected.
+Only the existing FreeBASIC 1.20 language is used so far: no generics, `FOR EACH`,
+lambdas or `defer`.
