@@ -390,7 +390,7 @@ Private Function ReplaceWStr Overload(ByRef Expression As WString, ByRef Finding
 	Return CountFind
 End Function
 
-Private Function ReplaceWStr Overload(ByRef Expression As WString, ByRef Finding As WString, ByRef Replacing As WString, ByVal MatchCase As Boolean = False) As UString
+Private Function ReplaceWStr Overload(ByRef Expression As WString, ByRef Finding As WString, ByRef Replacing As WString, ByVal MatchCase As Boolean = False) As UStringX
 	Dim Replaced As WString Ptr = NULL
 	Dim FoundPositions As Integer Ptr
 	Dim CountFind As Integer = FindCountWStr(Expression, Finding, FoundPositions, MatchCase)
@@ -426,7 +426,7 @@ Private Function ReplaceWStr Overload(ByRef Expression As WString, ByRef Finding
 End Function
 
 '全路径文件名补全
-Private Function FullNameFromFile(sFileName As WString, ByRef sDefPath As Const WString = "") As UString
+Private Function FullNameFromFile(sFileName As WString, ByRef sDefPath As Const WString = "") As UStringX
 	If Len(sFileName) Then
 		If InStr(sFileName, "\") Then
 			'如果文件名已经包含路径直接返回文件名
@@ -446,7 +446,7 @@ Private Function FullNameFromFile(sFileName As WString, ByRef sDefPath As Const 
 End Function
 
 '取全文件名sFullName的文件名部分
-Private Function FullName2File(sFullName As WString, ByRef sDefPath As Const WString = "\") As UString
+Private Function FullName2File(sFullName As WString, ByRef sDefPath As Const WString = "\") As UStringX
 	Dim sSLen As Integer = Len(sFullName)
 	Dim sPLen As Integer
 	Dim sPLoc As Integer
@@ -474,7 +474,7 @@ Private Function FullName2File(sFullName As WString, ByRef sDefPath As Const WSt
 End Function
 
 '取全文件名sFullName的路径部分
-Private Function FullName2Path(sFullName As WString, ByRef sDefPath As Const WString = "") As UString
+Private Function FullName2Path(sFullName As WString, ByRef sDefPath As Const WString = "") As UStringX
 	Dim sSLen As Integer = Len(sFullName)
 	Dim sPLen As Integer
 	Dim sPLoc As Integer

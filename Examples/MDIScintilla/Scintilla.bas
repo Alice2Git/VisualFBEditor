@@ -469,7 +469,7 @@ Private Property Scintilla.FontName(ByVal sty As Integer) ByRef As WString
 	a = CAllocate(iSize)
 	SendMessage(FHandle, SCI_STYLEGETFONT, sty, Cast(LPARAM, a))
 	
-	Dim w As UString
+	Dim w As UStringX
 	TextFromAnsi(*a, w)
 	If a Then Deallocate(a)
 	Return *Cast(WString Ptr,w.vptr)

@@ -514,7 +514,7 @@ Function AddTab(ByRef FileName As WString = "", bNew As Boolean = False, TreeN A
 				timeElapse = Timer
 				If bNew Then
 					Dim As String NewFormName, LeftSpace
-					Dim As UString LineTrim
+					Dim As UStringX LineTrim
 					Dim bChanged As Boolean
 					If TreeN <> 0 Then
 						NewFormName = Mid(TreeN->Text, 1, Len(TreeN->Text) - 5)
@@ -678,7 +678,7 @@ Sub OnMouseMoveEdit(ByRef Designer As My.Sys.Object, ByRef Sender As Control, Mo
 	'	#endif
 End Sub
 
-Declare Function GetParameters(sWord As String, te As TypeElement Ptr, teOld As TypeElement Ptr) As UString
+Declare Function GetParameters(sWord As String, te As TypeElement Ptr, teOld As TypeElement Ptr) As UStringX
 
 Sub OnMouseHoverEdit(ByRef Designer As My.Sys.Object, ByRef Sender As Control, MouseButton As Integer, x As Integer, y As Integer, Shift As Integer)
 	If (Not InDebug) AndAlso (Not GlobalSettings.ShowSymbolsTooltipsOnMouseHover) Then Exit Sub
@@ -699,7 +699,7 @@ Sub OnMouseHoverEdit(ByRef Designer As My.Sys.Object, ByRef Sender As Control, M
 		End If
 	End If
 	OldY = y: OldX = x
-	Dim As UString Value
+	Dim As UStringX Value
 	Dim As Integer EndChar
 	Dim As String sWord = tb->txtCode.GetWordAtPoint(x, y, False, , , EndChar)
 	If sWord <> "" Then
@@ -1852,7 +1852,7 @@ Sub TabWindow.FillAllProperties()
 	Dim OnlySelected As Boolean = Not Des->SelectedControls.Contains(Des->SelectedControl)
 	If OnlySelected Then SelCount = 1
 	Dim As WStringList FPropertyItemsAll
-	Dim As UString ItemText
+	Dim As UStringX ItemText
 	For i As Integer = 0 To SelCount - 1
 		FPropertyItems.Clear
 		If OnlySelected Then
@@ -2705,7 +2705,7 @@ Sub PropertyChanged(ByRef Sender As Control, ByRef Sender_Text As WString, IsCom
 	'Var te = GetPropertyType(tb->SelectedControl->ClassName, PropertyName)
 	'If te = 0 Then Exit Sub
 	Dim FLine As WString Ptr
-	Dim SenderText As UString
+	Dim SenderText As UStringX
 	Dim As Integer SelCount = tb->Des->SelectedControls.Count
 	Dim As Boolean Different, OnlySelected = Not tb->Des->SelectedControls.Contains(tb->Des->SelectedControl)
 	Dim As List SelectedControls
@@ -2719,7 +2719,7 @@ Sub PropertyChanged(ByRef Sender As Control, ByRef Sender_Text As WString, IsCom
 	End If
 	SenderText = IIf(IsCombo, Mid(Sender_Text, 2), Sender_Text)
 	With tb->txtCode
-		Dim As UString OldText = tb->ReadObjProperty(tb->Des->SelectedControl, PropertyName)
+		Dim As UStringX OldText = tb->ReadObjProperty(tb->Des->SelectedControl, PropertyName)
 		If SelCount > 1 Then
 			For i As Integer = 0 To SelCount - 1
 				If tb->ReadObjProperty(pSelectedControls->Item(i), PropertyName) <> OldText Then
@@ -2802,7 +2802,7 @@ Sub PropertyChanged(ByRef Sender As Control, ByRef Sender_Text As WString, IsCom
 						'If SelCount > 1 AndAlso plvProperties->Nodes.Item(i)->Text(1) = "" Then Continue For
 						PropertyName_ = GetItemText(plvProperties->Nodes.Item(i))
 						If (PropertyName_ = "Location" OrElse PropertyName_ = "Size") AndAlso PropertyName <> "Location.X" AndAlso PropertyName <> "Location.Y" AndAlso PropertyName <> "Size.Width" AndAlso PropertyName <> "Size.Height" Then Continue For
-						Dim TempWS As UString
+						Dim TempWS As UStringX
 						TempWS = tb->ReadObjProperty(pSelectedControls->Item(j), PropertyName_)
 						If TempWS <> plvProperties->Nodes.Item(i)->Text(1) Then
 							plvProperties->Nodes.Item(i)->Text(1) = TempWS
@@ -2838,7 +2838,7 @@ Sub DesignerModified(ByRef Sender As Designer, Ctrl As Any Ptr, PropertyName As 
 		pfrmMain->UpdateLock
 		If PropertyName = "" Then
 			Dim GridPropertyName As String
-			Dim TempWS As UString
+			Dim TempWS As UStringX
 			For i As Integer = 0 To plvProperties->Nodes.Count - 1
 				GridPropertyName = GetItemText(plvProperties->Nodes.Item(i))
 				If GridPropertyName = "Left" OrElse GridPropertyName = "Top" OrElse GridPropertyName = "Width" OrElse GridPropertyName = "Height" Then
@@ -2876,7 +2876,7 @@ Sub DesignerInsertControl(ByRef Sender As Designer, ByRef ClassName As String, C
 	Dim As SymbolsType Ptr stCopied = tb->Des->Symbols(CopiedCtrl)
 	If stDesignControl = 0 OrElse stDesignControl->ReadPropertyFunc = 0 Then Exit Sub
 	If st = 0 OrElse st->ReadPropertyFunc = 0 Then Exit Sub
-	Dim As UString LibraryPath = Replace(GetRelative(GetFolderName(st->Path, False), ExePath), "\", "/")
+	Dim As UStringX LibraryPath = Replace(GetRelative(GetFolderName(st->Path, False), ExePath), "\", "/")
 	If tb->Project <> 0 AndAlso Not tb->Project->Components.Contains(LibraryPath) Then tb->Project->Components.Add LibraryPath
 	Dim NewName As String = WGet(st->ReadPropertyFunc(Ctrl, "Name"))
 	tb->cboClass.Items.Add NewName, Ctrl, ClassName, ClassName, , 1, tb->FindControlIndex(NewName)
@@ -3145,10 +3145,10 @@ Sub ConvertHToBi(ByRef FileName As WString)
 				ElseIf b[i] = Asc("#") AndAlso Mid(b, i + 1, 10) = "#include <" Then
 					Var Pos1 = InStr(b, ">")
 					If Pos1 > 0 Then
-						Dim As UString IncludeFileName = Mid(b, i + 11, Pos1 - (i + 11))
+						Dim As UStringX IncludeFileName = Mid(b, i + 11, Pos1 - (i + 11))
 						If EndsWith(IncludeFileName, ".h") Then
 							b = Left(b, i) & "#include once """ & Left(IncludeFileName, Len(IncludeFileName) - 2) & ".bi""" & Mid(b, Pos1 + 1)
-							Dim As UString FullPathH = GetRelativePath(IncludeFileName, FileName)
+							Dim As UStringX FullPathH = GetRelativePath(IncludeFileName, FileName)
 							ConvertHToBi(FullPathH)
 						Else
 							b = Left(b, i) & "#include once """ & IncludeFileName & """" & Mid(b, Pos1 + 1)
@@ -3329,7 +3329,7 @@ Sub OnLineChangeEdit(ByRef Designer As My.Sys.Object, ByRef Sender As Control, B
 						End If
 						If AddSpacesToOperators Then
 							tb->AddSpaces OldLine, OldLine
-							'						Dim As UString c, cn, cp
+							'						Dim As UStringX c, cn, cp
 							'						For i As Integer = Len(b) To 1 Step -1
 							'							c = Mid(b, i, 1)
 							'							cn = Mid(b, i + 1, 1)
@@ -3952,7 +3952,7 @@ End Sub
 		#endif
 			If te <> 0 AndAlso te->ElementType = E_Snippet Then
 				tb->txtCode.ClearCarets
-				Dim As UString Parameters = te->Parameters
+				Dim As UStringX Parameters = te->Parameters
 				Var n = Len(*sLine) - Len(LTrim(*sLine, Any !"\t "))
 				Parameters = Replace(Parameters, !"\r", !"\r" & Left(*sLine, n))
 				If te->Elements.Count > 0 AndAlso te->Elements.Object(0) > 0 Then
@@ -4930,7 +4930,7 @@ Private Function GetFuncStartChar(sLine As WString Ptr, iSelEndChar As Integer, 
 	Return iSelStartCharFunc
 End Function
 
-Function GetParameters(sWord As String, te As TypeElement Ptr, teOld As TypeElement Ptr) As UString
+Function GetParameters(sWord As String, te As TypeElement Ptr, teOld As TypeElement Ptr) As UStringX
 	Dim tb As TabWindow Ptr = Cast(TabWindow Ptr, ptabCode->SelectedTab)
 	If tb = 0 Then Return ""
 	Dim As Integer iSelStartLine, iSelEndLine, iSelStartChar, iSelEndChar
@@ -4940,7 +4940,7 @@ Function GetParameters(sWord As String, te As TypeElement Ptr, teOld As TypeElem
 	Dim As Integer Index, iPos
 	Dim As WStringList ParametersList
 	Dim As String Symb, FuncName, Parameters, Parameter, InCondition
-	Dim As UString Comments, Link1
+	Dim As UStringX Comments, Link1
 	Dim As String TypeName
 	If ECLine Then
 		InCondition = ECLine->InCondition
@@ -5330,7 +5330,7 @@ Sub ParameterInfo(Key As Integer = Asc(","), SelStartChar As Integer = -1, SelEn
 	Dim As String TypeName, OldTypeName
 	If sWord = "" Then Exit Sub
 	TypeName = tb->txtCode.Content.GetLeftArgTypeName(iSelEndLine, iSelEndCharFunc - 1, te, teOld, teTypeOld, OldTypeName)
-	Dim Parameters As UString = GetParameters(sWord, te, teOld)
+	Dim Parameters As UStringX = GetParameters(sWord, te, teOld)
 	If Parameters <> "" Then
 		tb->txtCode.HintWord = sWord
 		tb->txtCode.Hint = Parameters
@@ -6147,8 +6147,8 @@ Sub OnKeyPressEdit(ByRef Designer As My.Sys.Object, ByRef Sender As Control, Key
 	End If
 End Sub
 
-Function GetResNamePath(ByRef ResName As WString, ByRef ResourceFile As WString) As UString
-	'Dim As UString ResourceFile = GetResourceFile(True)
+Function GetResNamePath(ByRef ResName As WString, ByRef ResourceFile As WString) As UStringX
+	'Dim As UStringX ResourceFile = GetResourceFile(True)
 	Dim As WString * 1024 FilePath
 	If InStr(ResName, ".") Then
 		FilePath = GetRelativePath(ResName, ResourceFile)
@@ -6186,9 +6186,9 @@ Function GetResNamePath(ByRef ResName As WString, ByRef ResourceFile As WString)
 		ThreadsEnter()
 		Dim As ProjectElement Ptr Project
 		Dim As TreeNode Ptr ProjectNode
-		Dim As UString CompileLine, MainFile = GetMainFile(, Project, ProjectNode)
-		Dim As UString FirstLine = GetFirstCompileLine(MainFile, Project, CompileLine)
-		Dim As UString ExeFolderName = GetFolderName(GetExeFileName(MainFile, CompileLine & " " & FirstLine))
+		Dim As UStringX CompileLine, MainFile = GetMainFile(, Project, ProjectNode)
+		Dim As UStringX FirstLine = GetFirstCompileLine(MainFile, Project, CompileLine)
+		Dim As UStringX ExeFolderName = GetFolderName(GetExeFileName(MainFile, CompileLine & " " & FirstLine))
 		ThreadsLeave()
 		If FileExists(ExeFolderName & "/./Resources/" & ResName & ".png") Then
 			FilePath = ExeFolderName & "/./Resources/" & ResName & ".png"
@@ -6225,7 +6225,7 @@ Sub TabWindow.SetGraphicProperty(Ctrl As Any Ptr, PropertyName As String, TypeNa
 		End Select
 		Exit Sub
 	End If
-	Dim As UString ResourceFile = GetResourceFile(True)
+	Dim As UStringX ResourceFile = GetResourceFile(True)
 	Dim As WString * 1024 FilePath = GetResNamePath(ResName, ResourceFile)
 	Select Case LCase(TypeName)
 	Case "graphictype"
@@ -7101,9 +7101,9 @@ Sub AnalyzeTab(Param As Any Ptr)
 												MutexLock tlockSuggestions
 												ThreadsEnter
 												Dim As Integer ii = 0, AddIndex = -1
-												Dim As UString ErrorText = ML("Error: Identifier not declared") & ", " & Matn & ". " & ML("Declare it")
-												Dim As UString FileName_ = ecc->FileName
-												Dim As UString ProjectFileName_
+												Dim As UStringX ErrorText = ML("Error: Identifier not declared") & ", " & Matn & ". " & ML("Declare it")
+												Dim As UStringX FileName_ = ecc->FileName
+												Dim As UStringX ProjectFileName_
 												If Project Then ProjectFileName_ = *Project->FileName
 												If LastItem Then ii = LastItem->Index + IIf(ContinueFromNext, 1, 0)
 												ContinueFromNext = False
@@ -7263,9 +7263,9 @@ Sub AnalyzeTab(Param As Any Ptr)
 		If CBool(te->ElementType = E_Constructor) OrElse CBool(te->ElementType = E_Destructor) OrElse CBool(te->ElementType = E_ByValParameter) OrElse CBool(te->ElementType = E_ByRefParameter) Then Continue For
 		If (te->ElementType = E_Enum OrElse te->ElementType = E_Type OrElse te->ElementType = E_Union) AndAlso te->Name = "" Then Continue For
 		Dim As Integer ii = 0, AddIndex = -1, MatnBoshi = te->StartChar, z = te->StartLine
-		Dim As UString ErrorText = ML("Warning: Identifier not used") & ", " & te->Name & ", " & ML("delete it if not needed")
-		Dim As UString FileName_ = te->FileName
-		Dim As UString ProjectFileName_
+		Dim As UStringX ErrorText = ML("Warning: Identifier not used") & ", " & te->Name & ", " & ML("delete it if not needed")
+		Dim As UStringX FileName_ = te->FileName
+		Dim As UStringX ProjectFileName_
 		If Project Then ProjectFileName_ = *Project->FileName
 		If LastItem Then ii = LastItem->Index + IIf(ContinueFromNext, 1, 0)
 		ContinueFromNext = False
@@ -7386,7 +7386,7 @@ Sub GetIncludeFiles(ByRef Content As EditControlContent, Project As ProjectEleme
 	If SyntaxHighlightingIdentifiers OrElse ChangeIdentifiersCase OrElse AutoSuggestions Then
 		Dim As EditControlLine Ptr ECLine
 		Dim As TreeNode Ptr ProjectNode
-		Dim As UString MainFile = GetMainFile(, Project, ProjectNode, True, True)
+		Dim As UStringX MainFile = GetMainFile(, Project, ProjectNode, True, True)
 		Content.CheckedFiles.Clear
 		Content.ExternalFiles.Clear
 		Content.ExternalFileLines.Clear
@@ -7645,12 +7645,12 @@ Sub LoadFunctionsWithContent(ByRef FileName As WString, ByRef Project As Project
 	Dim As Integer OldIncludeLine = -1, LastIndexFunctions, inPubProPri
 	Dim As WStringList Ptr LastFileList
 	Dim As IntegerList Ptr LastFileListLines
-	Dim As UString sFileName = FileName
+	Dim As UStringX sFileName = FileName
 	Dim As TabWindow Ptr tb
 	Dim As EditControlLine Ptr ECLine, ECLine2
 	Dim As EditControlStatement Ptr ECStatement, OldECStatement = 0, ecs
 	Dim As ConstructionBlock Ptr block, blockprev
-	Dim As UString Comments, b, b0, b1, b2, bTrim, bTrimLCase, b0Trim, b0TrimLCase
+	Dim As UStringX Comments, b, b0, b1, b2, bTrim, bTrimLCase, b0Trim, b0TrimLCase
 	Dim As WStringList WithArgs, Namespaces, Includes
 	Dim As Integer WithConstructionLine = -1, OldWithConstructionLine = -1
 	Dim As WString Ptr FPath, FLine1, FLine2
@@ -7688,7 +7688,7 @@ Sub LoadFunctionsWithContent(ByRef FileName As WString, ByRef Project As Project
 			End If
 		Else
 			Dim As TreeNode Ptr ProjectNode
-			Dim As UString MainFile = GetMainFile(, Project, ProjectNode, True, True)
+			Dim As UStringX MainFile = GetMainFile(, Project, ProjectNode, True, True)
 			Content.CheckedFiles.Clear
 			Content.ExternalFiles.Clear
 			Content.ExternalFileLines.Clear
@@ -7796,7 +7796,7 @@ Sub LoadFunctionsWithContent(ByRef FileName As WString, ByRef Project As Project
 					b1 = Mid(b1, 1, Pos1)
 				End If
 			End If
-			'Dim As UString res(Any)
+			'Dim As UStringX res(Any)
 			'Split(b1, """", res())
 			'b2 = ""
 			'For j As Integer = 0 To UBound(res)
@@ -8168,7 +8168,7 @@ Sub LoadFunctionsWithContent(ByRef FileName As WString, ByRef Project As Project
 						'ElseIf StartsWith(bTrimLCase & " ", "private: ") Then
 						'	inPubProPri = 2
 					ElseIf StartsWith(bTrimLCase & " ", "#define ") Then
-						Dim As UString b2 = Trim(Mid(bTrim, 9))
+						Dim As UStringX b2 = Trim(Mid(bTrim, 9))
 						Pos1 = InStr(b2, " ")
 						Pos2 = InStr(b2, "(")
 						Pos3 = InStr(b2, ")")
@@ -8534,7 +8534,7 @@ Sub LoadFunctionsWithContent(ByRef FileName As WString, ByRef Project As Project
 									End If
 								End If
 								If te->ElementType = E_Event Then
-									Dim As UString bTrim = CurType
+									Dim As UStringX bTrim = CurType
 									Pos2 = InStrRev(bTrim, ")")
 									Pos5 = InStr(bTrim, "(")
 									If Pos2 > 0 AndAlso Pos5 > 0 Then
@@ -8558,7 +8558,7 @@ Sub Suggestions
 	Dim As ProjectElement Ptr Project
 	Dim As EditControlContent Ptr ecc
 	Dim As TreeNode Ptr ProjectNode
-	Dim As UString MainFile
+	Dim As UStringX MainFile
 	Dim As Object Ptr tbOrProject = tb
 	MainFile = GetMainFile(, Project, ProjectNode)
 	If (tb = 0) AndAlso (Project = 0) Then Exit Sub
@@ -8753,9 +8753,9 @@ Sub AddTypeNodes(tn As TreeNode Ptr, te As TypeElement Ptr)
 	Next
 End Sub
 
-Function TrimAll(ByRef Value As WString) As UString
+Function TrimAll(ByRef Value As WString) As UStringX
 	Dim As Integer CountReplaced
-	Dim As UString ChangedValue = Value
+	Dim As UStringX ChangedValue = Value
 	Do
 		ChangedValue = Replace(ChangedValue, "  ", " ", , , , CountReplaced)
 	Loop While CountReplaced > 0
@@ -8787,7 +8787,7 @@ Sub TabWindow.FormDesign(NotForms As Boolean = False)
 	Dim ActiveCtrlName As String
 	Dim SelControlNames As WStringList
 	Dim bSelControlFind As Boolean
-	Dim As UString ResourceFile
+	Dim As UStringX ResourceFile
 	txtCode.DropDownTypeElement = 0
 	If Not NotForms Then
 		ResourceFile = GetResourceFile(True)
@@ -8973,8 +8973,8 @@ Sub TabWindow.FormDesign(NotForms As Boolean = False)
 	Dim As String CurrentCondition
 	Dim As WStringList WithArgs, Namespaces, Includes
 	Dim ConstructionBlocks As List
-	Dim As UString sFileName = FileName
-	Dim As UString Comments, b, b0, b1, b2, bTrim, bTrimLCase, b0Trim, b0TrimLCase
+	Dim As UStringX sFileName = FileName
+	Dim As UStringX Comments, b, b0, b1, b2, bTrim, bTrimLCase, b0Trim, b0TrimLCase
 	Dim As Boolean IsBas = EndsWith(LCase(sFileName), ".bas") OrElse (EndsWith(LCase(sFileName), ".frm") OrElse EndsWith(LCase(sFileName), ".rpt")), inFunc
 	Dim FileEncoding As FileEncodings, NewLineType As NewLineTypes
 	Dim As Integer WithConstructionLine = -1, OldWithConstructionLine = -1
@@ -10342,13 +10342,13 @@ Sub TabWindow.FormDesign(NotForms As Boolean = False)
 	Next
 	If bSearchToDo Then
 		Dim As Integer iPos
-		Dim As UString TabWindowFileName = WGet(FFileName)
+		Dim As UStringX TabWindowFileName = WGet(FFileName)
 		For i As Integer = 0 To ToDos.Count - 1
 			te = ToDos.Object(i)
 			Dim As Boolean bFind
 			For j As Integer = iPos To lvToDo.ListItems.Count - 1
 				Var item = lvToDo.ListItems.Item(j)
-				Dim As UString TabFileName = item->Text(3)
+				Dim As UStringX TabFileName = item->Text(3)
 				If TabFileName <> "" AndAlso TabFileName = TabWindowFileName OrElse item->Tag = @This Then
 					item->ImageKey = te->Name
 					item->Text(0) = ToDos.Item(i)
@@ -10371,7 +10371,7 @@ Sub TabWindow.FormDesign(NotForms As Boolean = False)
 		Next i
 		For i As Integer = lvToDo.ListItems.Count - 1 To iPos Step -1
 			Var item = lvToDo.ListItems.Item(i)
-			Dim As UString TabFileName = item->Text(3)
+			Dim As UStringX TabFileName = item->Text(3)
 			If TabFileName <> "" AndAlso TabFileName = TabWindowFileName OrElse item->Tag = @This Then
 				lvToDo.ListItems.Remove i
 			End If
@@ -11364,7 +11364,7 @@ Sub lvProperties_ItemExpanding(ByRef Designer As My.Sys.Object, ByRef Sender As 
 		If te = 0 Then Exit Sub
 		ptabRight->UpdateLock
 		Dim lvItem As TreeListViewItem Ptr
-		Dim As UString ItemText
+		Dim As UStringX ItemText
 		Dim As Integer SelCount = tb->Des->SelectedControls.Count
 		FPropertyItems.Clear
 		tb->FillProperties te->TypeName
@@ -11890,7 +11890,7 @@ End Sub
 'End Function
 '#EndIf
 
-Function GetMainFile(bSaveTab As Boolean = False, ByRef Project As ProjectElement Ptr = 0, ByRef ProjectNode As TreeNode Ptr = 0, WithoutMainNode As Boolean = False, FromProject As Boolean = False) As UString
+Function GetMainFile(bSaveTab As Boolean = False, ByRef Project As ProjectElement Ptr = 0, ByRef ProjectNode As TreeNode Ptr = 0, WithoutMainNode As Boolean = False, FromProject As Boolean = False) As UStringX
 	Dim As TabWindow Ptr tb
 	Dim As TreeNode Ptr Node = ProjectNode
 	If FromProject AndAlso Project <> 0 Then Return *Project->MainFileName
@@ -11909,7 +11909,7 @@ Function GetMainFile(bSaveTab As Boolean = False, ByRef Project As ProjectElemen
 							tb = Cast(TabWindow Ptr, ptabCode->Tabs[i])
 							If tb AndAlso tb->ptn = Node AndAlso tb->FileName = WGet(Project->MainFileName) Then
 								If tb->Modified Then
-									Dim As UString FFileName
+									Dim As UStringX FFileName
 									FFileName = GetUserTempPath("Untitled.bas")
 									If FFileName = "" Then Return ""
 									tb->txtCode.SaveToFile(FFileName, tb->FileEncoding, tb->NewLineType)
@@ -11934,7 +11934,7 @@ Function GetMainFile(bSaveTab As Boolean = False, ByRef Project As ProjectElemen
 							If bSaveTab Then
 								tb->Save
 							Else
-								Dim As UString FFileName
+								Dim As UStringX FFileName
 								Dim As String TempFolder = GetUserTempPath()
 								If TempFolder = "" Then Return ""
 								FFileName = TempFolder & "Untitled.bas"
@@ -11980,7 +11980,7 @@ Function GetMainFile(bSaveTab As Boolean = False, ByRef Project As ProjectElemen
 				If bSaveTab Then
 					tb->Save
 				Else
-					Dim As UString FFileName
+					Dim As UStringX FFileName
 					FFileName = GetUserTempPath("Untitled.bas")
 					If FFileName = "" Then Return ""
 					tb->txtCode.SaveToFile(FFileName, tb->FileEncoding, tb->NewLineType)
@@ -12000,9 +12000,9 @@ Function GetMainFile(bSaveTab As Boolean = False, ByRef Project As ProjectElemen
 	Return ""
 End Function
 
-Function GetResourceFile(WithoutMainNode As Boolean = False, ByRef FirstLine As WString = "", ProjectNode_ As TreeNode Ptr = 0) As UString
+Function GetResourceFile(WithoutMainNode As Boolean = False, ByRef FirstLine As WString = "", ProjectNode_ As TreeNode Ptr = 0) As UStringX
 	Dim As WString * MAX_PATH ResourceFile, MainFile, sFirstLine
-	Dim As UString CompileLine
+	Dim As UStringX CompileLine
 	Dim As ProjectElement Ptr Project
 	Dim As TreeNode Ptr ProjectNode = ProjectNode_
 	MainFile = GetMainFile(, Project, ProjectNode, WithoutMainNode)
@@ -12353,9 +12353,9 @@ Function CheckExpression(ByRef sLine As WString, ForWindows As Boolean) As Boole
 	Return bOrElse
 End Function
 
-Function GetFirstCompileLine(ByRef FileName As WString, ByRef Project As ProjectElement Ptr, CompileLine As UString, ForWindows As Boolean = False) As UString
+Function GetFirstCompileLine(ByRef FileName As WString, ByRef Project As ProjectElement Ptr, CompileLine As UStringX, ForWindows As Boolean = False) As UStringX
 	Dim As Boolean Bit32 = tbt32Bit->Checked
-	Dim As UString Result
+	Dim As UStringX Result
 	CompileLine = ""
 	Result = IIf(Bit32, *Compiler32Arguments, *Compiler64Arguments)
 	If Project Then
@@ -12483,7 +12483,7 @@ Function GetFirstCompileLine(ByRef FileName As WString, ByRef Project As Project
 		CloseFile_(Fn)
 	End If
 	If Project Then
-		Dim As UString ResourceFileName
+		Dim As UStringX ResourceFileName
 		If ForWindows Then
 			If WGet(Project->ResourceFileName) <> "" Then ResourceFileName = GetShortFileName(WGet(Project->ResourceFileName), FileName)
 		Else
@@ -12504,7 +12504,7 @@ Sub RunEmulator(Param As Any Ptr)
 	#ifndef __USE_GTK__
 		Dim As WString Ptr SdkDir = Param
 		Dim As WString Ptr Workdir, CmdL
-		Dim As UString AvdName
+		Dim As UStringX AvdName
 		#define BufferSize 2048
 		If Not FileExists(*SdkDir & "\emulator\emulator.exe") Then
 			ShowMessages ML("File not found") & ": " & *SdkDir & "\emulator\emulator.exe", False
@@ -12524,7 +12524,7 @@ Sub RunEmulator(Param As Any Ptr)
 			Dim hReadPipe As HANDLE
 			Dim hWritePipe As HANDLE
 			Dim sBuffer As ZString * BufferSize
-			Dim sOutput As UString
+			Dim sOutput As UStringX
 			Dim bytesRead As DWORD
 			Dim result_ As Integer
 			
@@ -12609,7 +12609,7 @@ Sub RunLogCat(Param As Any Ptr)
 			Dim hReadPipe As HANDLE
 			Dim hWritePipe As HANDLE
 			Dim sBuffer As ZString * BufferSize
-			Dim sOutput As UString
+			Dim sOutput As UStringX
 			Dim bytesRead As DWORD
 			Dim result_ As Integer
 			
@@ -12913,7 +12913,7 @@ Sub RunPr(Debugger As String = "", ByRef ProjectFileName As WString, ByRef Proje
 		End If
 		Dim As Integer Fn = FreeFile_
 		Open ProjectFileName & "/local.properties" For Input As #Fn
-		Dim SDKDir As UString
+		Dim SDKDir As UStringX
 		Dim pBuff As WString Ptr
 		Dim As Integer FileSize
 		FileSize = LOF(Fn)
@@ -12973,7 +12973,7 @@ Sub RunPr(Debugger As String = "", ByRef ProjectFileName As WString, ByRef Proje
 				Dim hReadPipe As HANDLE
 				Dim hWritePipe As HANDLE
 				Dim sBuffer As ZString * BufferSize
-				Dim sOutput As UString
+				Dim sOutput As UStringX
 				Dim bytesRead As DWORD
 				Dim result_ As Integer
 				Dim Buff As WString * 2048
@@ -13059,7 +13059,7 @@ Sub RunPr(Debugger As String = "", ByRef ProjectFileName As WString, ByRef Proje
 				Result = Shell("""" & WGet(TerminalPath) & """ --wait -- """ & build_create_shellscript(GetFolderName(*ExeFileName), *ExeFileName, False, , *Arguments) & """")
 			Else
 				ChDir(GetFolderName(*ExeFileName))
-				Dim As UString CommandLine
+				Dim As UStringX CommandLine
 				If EndsWith(*ExeFileName, ".html") Then
 					CommandLine = "http://localhost:8000/" & GetFileName(*ExeFileName)
 				Else
@@ -13260,8 +13260,8 @@ End Sub
 Sub RunProgram(Param As Any Ptr)
 	Dim As ProjectElement Ptr Project
 	Dim As TreeNode Ptr ProjectNode
-	Dim As UString CompileLine, MainFile = GetMainFile(, Project, ProjectNode)
-	Dim As UString FirstLine = GetFirstCompileLine(MainFile, Project, CompileLine)
+	Dim As UStringX CompileLine, MainFile = GetMainFile(, Project, ProjectNode)
+	Dim As UStringX FirstLine = GetFirstCompileLine(MainFile, Project, CompileLine)
 	If Project <> 0 Then
 		RunPr , *Project->FileName, *Project->CommandLineArguments, MainFile, CompileLine, FirstLine
 	Else

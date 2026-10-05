@@ -104,8 +104,8 @@ Sub StartDebugging(Param As Any Ptr)
 End Sub
 
 Sub RunCmd(Param As Any Ptr)
-	Dim As UString MainFile = GetMainFile()
-	Dim As UString cmd
+	Dim As UStringX MainFile = GetMainFile()
+	Dim As UStringX cmd
 	Dim As WString Ptr Workdir, CmdL
 	If Trim(MainFile) = "" OrElse Trim(MainFile) = ML("Untitled") Then MainFile = GetFullPath(*ProjectsPath & "\1", pApp->FileName)
 	If OpenCommandPromptInMainFileFolder Then
@@ -154,7 +154,7 @@ Sub mClickUseDefine(ByRef Designer As My.Sys.Object, Sender As My.Sys.Object)
 End Sub
 Sub mClickAIChat(ByRef Designer As My.Sys.Object, Sender As My.Sys.Object)
 	Dim As WString * MAX_PATH FileName
-	Dim As UString ChatDirectory
+	Dim As UStringX ChatDirectory
 	Select Case Sender.ToString
 	Case "AIChatEdit"
 		If Trim(txtAIAgent.SelText) = "" Then

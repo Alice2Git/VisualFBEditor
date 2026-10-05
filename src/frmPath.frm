@@ -286,7 +286,7 @@ Private Sub frmPath.cmdPath_Click(ByRef Sender As Control)
 				End If
 			End If
 		Else
-			Dim As UString FolderName
+			Dim As UStringX FolderName
 			If .WithType Then
 				FolderName = GetFolderName(.ExeFileName)
 			Else

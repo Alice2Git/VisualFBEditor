@@ -245,10 +245,10 @@ Namespace VisualFBEditor
 			Dim As ProjectElement Ptr Project
 			Dim As ExplorerElement Ptr ee
 			Dim As TreeNode Ptr ProjectNode
-			Dim As UString ProjectFile = ""
-			Dim As UString CompileLine, MainFile = GetMainFile(, Project, ProjectNode)
-			Dim As UString FirstLine = GetFirstCompileLine(MainFile, Project, CompileLine)
-			Dim As UString ExeFile = GetExeFileName(MainFile, CompileLine & " " & FirstLine)
+			Dim As UStringX ProjectFile = ""
+			Dim As UStringX CompileLine, MainFile = GetMainFile(, Project, ProjectNode)
+			Dim As UStringX FirstLine = GetFirstCompileLine(MainFile, Project, CompileLine)
+			Dim As UStringX ExeFile = GetExeFileName(MainFile, CompileLine & " " & FirstLine)
 			If ProjectNode <> 0 Then ee = ProjectNode->Tag
 			If ee <> 0 Then ProjectFile = *ee->FileName
 			Select Case LCase(PropertyName)
@@ -257,7 +257,7 @@ Namespace VisualFBEditor
 			Case "exefile": Return ExeFile.vptr
 			End Select
 		Case "currentword"
-			Dim As UString CurrentWord = ""
+			Dim As UStringX CurrentWord = ""
 			Dim As TabWindow Ptr tb = Cast(TabWindow Ptr, ptabCode->SelectedTab)
 			If tb <> 0 Then CurrentWord = tb->txtCode.GetWordAtCursor
 			Return CurrentWord.vptr
@@ -281,8 +281,8 @@ Namespace VisualFBEditor
 	End Function
 End Namespace
 
-Function MS cdecl(ByRef V As WString, ...) As UString
-	Dim As UString Result
+Function MS cdecl(ByRef V As WString, ...) As UStringX
+	Dim As UStringX Result
 	Dim As Boolean bFind
 	If LCase(App.CurLanguage) <> "english" Then
 		Dim As Integer tIndex = mlKeys.IndexOfKey(V)
@@ -419,7 +419,7 @@ Sub cboPropertyValue_Change(ByRef Designer As My.Sys.Object, ByRef Sender As Con
 	PropertyChanged Sender, cboPropertyValue.Text, True
 End Sub
 
-Function GetShortFileName(ByRef FileName As WString, ByRef FilePath As WString) As UString
+Function GetShortFileName(ByRef FileName As WString, ByRef FilePath As WString) As UStringX
 	If StartsWith(FileName, GetFolderName(FilePath)) Then
 		Return Mid(FileName, Len(GetFolderName(FilePath)) + 1)
 	Else
@@ -427,7 +427,7 @@ Function GetShortFileName(ByRef FileName As WString, ByRef FilePath As WString) 
 	End If
 End Function
 
-Function GetFullPathInSystem(ByRef Path As WString) As UString
+Function GetFullPathInSystem(ByRef Path As WString) As UStringX
 	If InStr(Path, ":") > 0 OrElse Path = "" Then
 		Return Path
 	Else
@@ -448,7 +448,7 @@ Function GetFullPathInSystem(ByRef Path As WString) As UString
 	End If
 End Function
 
-Function GetFullPath(ByRef Path As WString, ByRef FromFile As WString = "") As UString
+Function GetFullPath(ByRef Path As WString, ByRef FromFile As WString = "") As UStringX
 	If CInt(InStr(Path, ":") > 0) OrElse CInt(StartsWith(Path, "/")) OrElse CInt(StartsWith(Path, "\")) Then
 		If EndsWith(Path, "\..") OrElse EndsWith(Path, "/..") Then
 			Return GetFolderName(GetFolderName(Path))
@@ -473,7 +473,7 @@ Function GetFullPath(ByRef Path As WString, ByRef FromFile As WString = "") As U
 		End If
 	Else
 		If FromFile = "" Then
-			Dim As UString Path_ = GetFullPathInSystem(Path)
+			Dim As UStringX Path_ = GetFullPathInSystem(Path)
 			If Path_ <> "" Then
 				Return Path_
 			Else
@@ -485,14 +485,14 @@ Function GetFullPath(ByRef Path As WString, ByRef FromFile As WString = "") As U
 	End If
 End Function
 
-Function GetFolderName(ByRef FileName As WString, WithSlash As Boolean = True) As UString
+Function GetFolderName(ByRef FileName As WString, WithSlash As Boolean = True) As UStringX
 	Dim Posi As Long = InStrRev(FileName, Any "\/", Len(FileName) - 1)
 	If Posi <= 0 Then Return ""
 	If Not WithSlash Then Posi -= 1
 	Return Left(FileName, Posi)
 End Function
 
-Function GetFileName(ByRef FileName As WString, WithExtension As Boolean = True) As UString
+Function GetFileName(ByRef FileName As WString, WithExtension As Boolean = True) As UStringX
 	Dim As Long nPos, Posi = InStrRev(FileName, Any "\/:")
 	nPos = InStrRev(FileName, ".")
 	If nPos < 1 OrElse nPos < Posi Then nPos = Len(FileName)
@@ -504,7 +504,7 @@ Function GetFileName(ByRef FileName As WString, WithExtension As Boolean = True)
 End Function
 
 #ifdef __USE_GTK__
-Private Function GetGtkUserDirectory(ByVal Directory As GUserDirectory, ByRef FallbackName As WString) As UString
+Private Function GetGtkUserDirectory(ByVal Directory As GUserDirectory, ByRef FallbackName As WString) As UStringX
 	Dim As ZString Ptr SpecialDirectory = Cast(ZString Ptr, g_get_user_special_dir(Directory))
 	If SpecialDirectory Then Return GetOSPath(WStr(*SpecialDirectory)) & "/"
 	Return GetOSPath(Environ("HOME")) & "/" & FallbackName & "/"
@@ -512,7 +512,7 @@ End Function
 #endif
 
 'Based on Berkeley code: https://www.freebasic.net/forum/viewtopic.php?p=305321#p305321
-Function GetSpecialPath(ByRef key As WString) As UString
+Function GetSpecialPath(ByRef key As WString) As UStringX
 	Dim As WString * MAX_PATH path
 	#ifdef __FB_WIN32__
 		Dim As WString * MAX_PATH userHome = Environ("HOMEDRIVE") + Environ("HOMEPATH")
@@ -759,13 +759,13 @@ Function GetSpecialPath(ByRef key As WString) As UString
 End Function
 
 Function EnsureFolderExists(ByRef FolderName As WString) As Boolean
-	Dim As UString NormalizedPath = GetOSPath(FolderName)
+	Dim As UStringX NormalizedPath = GetOSPath(FolderName)
 	While Len(NormalizedPath) > 3 AndAlso (EndsWith(NormalizedPath, "/") OrElse EndsWith(NormalizedPath, "\"))
 		NormalizedPath = Left(NormalizedPath, Len(NormalizedPath) - 1)
 	Wend
 	If NormalizedPath = "" Then Return False
 	If FolderExists(NormalizedPath) Then Return True
-	Dim As UString ParentFolder = GetFolderName(NormalizedPath, False)
+	Dim As UStringX ParentFolder = GetFolderName(NormalizedPath, False)
 	If ParentFolder = "" OrElse ParentFolder = NormalizedPath Then Return False
 	If Not EnsureFolderExists(ParentFolder) Then Return False
 	If MkDir(NormalizedPath) <> 0 AndAlso Not FolderExists(NormalizedPath) Then Return False
@@ -780,8 +780,8 @@ Function CopyFileToPath(ByRef SourcePath As WString, ByRef DestinationPath As WS
 	#endif
 End Function
 
-Function GetUserDataPath(ByRef RelativePath As WString = "") As UString
-	Dim As UString BasePath = GetSpecialPath("USERSETTINGS")
+Function GetUserDataPath(ByRef RelativePath As WString = "") As UStringX
+	Dim As UStringX BasePath = GetSpecialPath("USERSETTINGS")
 	If BasePath = "" Then
 		MsgBox "Unable to locate the user settings folder."
 		Return ""
@@ -791,9 +791,9 @@ Function GetUserDataPath(ByRef RelativePath As WString = "") As UString
 		MsgBox "Unable to create user settings folder: " & BasePath
 		Return ""
 	End If
-	Dim As UString FullPath = BasePath & Replace(RelativePath, "\", "/")
+	Dim As UStringX FullPath = BasePath & Replace(RelativePath, "\", "/")
 	If RelativePath <> "" Then
-		Dim As UString ParentFolder = IIf(EndsWith(RelativePath, "/") OrElse EndsWith(RelativePath, "\"), FullPath, GetFolderName(FullPath))
+		Dim As UStringX ParentFolder = IIf(EndsWith(RelativePath, "/") OrElse EndsWith(RelativePath, "\"), FullPath, GetFolderName(FullPath))
 		If ParentFolder <> "" AndAlso Not EnsureFolderExists(ParentFolder) Then
 			MsgBox "Unable to create user settings folder: " & ParentFolder
 			Return ""
@@ -802,8 +802,8 @@ Function GetUserDataPath(ByRef RelativePath As WString = "") As UString
 	Return GetOSPath(FullPath)
 End Function
 
-Function GetUserDocumentsPath(ByRef RelativePath As WString = "") As UString
-	Dim As UString BasePath = GetSpecialPath("USERDOCUMENTS")
+Function GetUserDocumentsPath(ByRef RelativePath As WString = "") As UStringX
+	Dim As UStringX BasePath = GetSpecialPath("USERDOCUMENTS")
 	If BasePath = "" Then
 		MsgBox "Unable to locate the user documents folder."
 		Return ""
@@ -813,9 +813,9 @@ Function GetUserDocumentsPath(ByRef RelativePath As WString = "") As UString
 		MsgBox "Unable to create user documents folder: " & BasePath
 		Return ""
 	End If
-	Dim As UString FullPath = BasePath & Replace(RelativePath, "\", "/")
+	Dim As UStringX FullPath = BasePath & Replace(RelativePath, "\", "/")
 	If RelativePath <> "" Then
-		Dim As UString ParentFolder = IIf(EndsWith(RelativePath, "/") OrElse EndsWith(RelativePath, "\"), FullPath, GetFolderName(FullPath))
+		Dim As UStringX ParentFolder = IIf(EndsWith(RelativePath, "/") OrElse EndsWith(RelativePath, "\"), FullPath, GetFolderName(FullPath))
 		If ParentFolder <> "" AndAlso Not EnsureFolderExists(ParentFolder) Then
 			MsgBox "Unable to create user documents folder: " & ParentFolder
 			Return ""
@@ -824,8 +824,8 @@ Function GetUserDocumentsPath(ByRef RelativePath As WString = "") As UString
 	Return GetOSPath(FullPath)
 End Function
 
-Function GetUserTempPath(ByRef RelativePath As WString = "") As UString
-	Dim As UString BasePath = GetSpecialPath("USERTEMP")
+Function GetUserTempPath(ByRef RelativePath As WString = "") As UStringX
+	Dim As UStringX BasePath = GetSpecialPath("USERTEMP")
 	If BasePath = "" Then
 		MsgBox "Unable to locate the temporary folder."
 		Return ""
@@ -836,9 +836,9 @@ Function GetUserTempPath(ByRef RelativePath As WString = "") As UString
 		MsgBox "Unable to create temporary folder: " & BasePath
 		Return ""
 	End If
-	Dim As UString FullPath = BasePath & Replace(RelativePath, "\", "/")
+	Dim As UStringX FullPath = BasePath & Replace(RelativePath, "\", "/")
 	If RelativePath <> "" Then
-		Dim As UString ParentFolder = IIf(EndsWith(RelativePath, "/") OrElse EndsWith(RelativePath, "\"), FullPath, GetFolderName(FullPath))
+		Dim As UStringX ParentFolder = IIf(EndsWith(RelativePath, "/") OrElse EndsWith(RelativePath, "\"), FullPath, GetFolderName(FullPath))
 		If ParentFolder <> "" AndAlso Not EnsureFolderExists(ParentFolder) Then
 			MsgBox "Unable to create temporary folder: " & ParentFolder
 			Return ""
@@ -847,10 +847,10 @@ Function GetUserTempPath(ByRef RelativePath As WString = "") As UString
 	Return GetOSPath(FullPath)
 End Function
 
-Function GetAIChatDirectory() As UString
-	Dim As UString Directory = GetUserDocumentsPath("AIChat/")
+Function GetAIChatDirectory() As UStringX
+	Dim As UStringX Directory = GetUserDocumentsPath("AIChat/")
 	If Directory = "" Then Return ""
-	Dim As UString LegacyDirectory = GetOSPath(ExePath & "/AIChat/")
+	Dim As UStringX LegacyDirectory = GetOSPath(ExePath & "/AIChat/")
 	If FolderExists(LegacyDirectory) Then
 		Dim As String FileName = Dir(LegacyDirectory & "*.md")
 		While FileName <> ""
@@ -865,10 +865,10 @@ Function GetAIChatDirectory() As UString
 	Return Directory
 End Function
 
-Function GetUserChangeLogPath(ByRef FileName As WString) As UString
-	Dim As UString UserPath = GetUserDocumentsPath("ChangeLogs/" & FileName)
+Function GetUserChangeLogPath(ByRef FileName As WString) As UStringX
+	Dim As UStringX UserPath = GetUserDocumentsPath("ChangeLogs/" & FileName)
 	If UserPath = "" Then Return ""
-	Dim As UString LegacyPath = GetOSPath(ExePath & Slash & FileName)
+	Dim As UStringX LegacyPath = GetOSPath(ExePath & Slash & FileName)
 	If Not FileExists(UserPath) AndAlso FileExists(LegacyPath) Then
 		If Not CopyFileToPath(LegacyPath, UserPath) Then
 			MsgBox "Unable to migrate change log to: " & UserPath
@@ -878,19 +878,19 @@ Function GetUserChangeLogPath(ByRef FileName As WString) As UString
 	Return UserPath
 End Function
 
-Function GetUserThemePath(ByRef ThemeName As WString, IsInterfaceTheme As Boolean = False) As UString
-	Dim As UString ThemeFolder
-	Dim As UString RelativePath
+Function GetUserThemePath(ByRef ThemeName As WString, IsInterfaceTheme As Boolean = False) As UStringX
+	Dim As UStringX ThemeFolder
+	Dim As UStringX RelativePath
 	If IsInterfaceTheme Then
 		ThemeFolder = "Settings/Themes/Interface/"
 	Else
 		ThemeFolder = "Settings/Themes/"
 	End If
 	RelativePath = ThemeFolder & ThemeName & ".ini"
-	Dim As UString UserPath = GetUserDataPath(RelativePath)
+	Dim As UStringX UserPath = GetUserDataPath(RelativePath)
 	If UserPath = "" Then Return ""
 	If Not FileExists(UserPath) Then
-		Dim As UString SourcePath = GetOSPath(ExePath & "/" & RelativePath)
+		Dim As UStringX SourcePath = GetOSPath(ExePath & "/" & RelativePath)
 		If FileExists(SourcePath) Then
 			Dim As Boolean CopySucceeded = CopyFileToPath(SourcePath, UserPath)
 			If Not CopySucceeded AndAlso FileExists(UserPath) Then CopySucceeded = True
@@ -903,7 +903,7 @@ Function GetUserThemePath(ByRef ThemeName As WString, IsInterfaceTheme As Boolea
 	Return UserPath
 End Function
 
-Private Function CollapseSlashes(ByRef p As WString) As UString
+Private Function CollapseSlashes(ByRef p As WString) As UStringX
 	Dim As WString * 2 prefix = ""
 	Dim As WString * MAX_PATH rest = p
 	
@@ -925,7 +925,7 @@ Private Function CollapseSlashes(ByRef p As WString) As UString
 End Function
 
 'Based on Berkeley code: https://www.freebasic.net/forum/viewtopic.php?p=305321#p305321
-Function GetFilePath(ByRef source As WString) As UString
+Function GetFilePath(ByRef source As WString) As UStringX
 	Dim As Integer i
 	Dim As WString * MAX_PATH path
 	
@@ -945,7 +945,7 @@ Function GetFilePath(ByRef source As WString) As UString
 	Return path
 End Function
 
-Function GetBakFileName(ByRef FileName As WString) As UString
+Function GetBakFileName(ByRef FileName As WString) As UStringX
 	Dim As String BakDate = Format(Now, "yyyymmdd_hhmm") 'David Change ReplaceAny(__DATE_ISO__ & "_" & Time,":/\-","")
 	If FileName = "" Then
 		Dim As String TempFolder = GetUserTempPath()
@@ -970,10 +970,10 @@ Function GetBakFileName(ByRef FileName As WString) As UString
 	End If
 End Function
 
-Function GetExeFileName(ByRef FileName As WString, ByRef sLine As WString) As UString
-	Dim As UString CompileWith = " " & Replace(LTrim(sLine), BackSlash, Slash)
-	Dim As UString pFileName = Replace(FileName, BackSlash, Slash)
-	Dim As UString ExeFileName
+Function GetExeFileName(ByRef FileName As WString, ByRef sLine As WString) As UStringX
+	Dim As UStringX CompileWith = " " & Replace(LTrim(sLine), BackSlash, Slash)
+	Dim As UStringX pFileName = Replace(FileName, BackSlash, Slash)
+	Dim As UStringX ExeFileName
 	Dim As String SearchChar
 	Dim As Long Pos1, Pos2
 	Pos1 = InStr(CompileWith, " -x ")
@@ -1028,7 +1028,7 @@ Function Compile(Parameter As String = "", bAll As Boolean = False) As Integer
 	Dim As WString Ptr MainFileNameOnly, MainFile, LogFileName, LogFileName2, LogText, BatFileName, fbcCommand, PipeApplicationName, PipeCommand, fbcCommand1, PipeCommand1
 	Dim As WString Ptr CompileWith, MFFPathC, ErrFileName, ErrTitle, ExeName, FirstLine, ProjectPath
 	Dim As Integer NumberErr, NumberWarning, NumberInfo, NodesCount, CompileResult = 1
-	Dim As UString CompileLine
+	Dim As UStringX CompileLine
 	Dim As ProjectElement Ptr Project
 	Dim As TreeNode Ptr ProjectNode
 	Dim As Boolean Bit32 = tbt32Bit->Checked
@@ -1181,7 +1181,7 @@ Function Compile(Parameter As String = "", bAll As Boolean = False) As Integer
 				Else
 					WAdd(CompileWith, " -i """ & CtlLibrary->IncludeFolder & """")
 				End If
-				Dim As UString LibFolder
+				Dim As UStringX LibFolder
 				#ifdef __FB_WIN32__
 					#ifdef __FB_ARM__
 						LibFolder = CtlLibrary->Lib64ArmFolder
@@ -1218,7 +1218,7 @@ Function Compile(Parameter As String = "", bAll As Boolean = False) As Integer
 		WAdd(CompileWith, " -d _DebugWindow_=" & Str(txtImmediate.Handle))
 		'WLet LogFileName, ExePath & "/Temp/debug_compil.log"
 		WLet(LogFileName2, GetUserTempPath("Compile.log"))
-		Dim As UString OtherModuleFiles
+		Dim As UStringX OtherModuleFiles
 		If CInt(ProjectNode <> 0) AndAlso CInt(Project <> 0) AndAlso CInt(Project->PassAllModuleFilesToCompiler) Then
 			For i As Integer = 0 To ProjectNode->Nodes.Count - 1
 				If EndsWith(LCase(ProjectNode->Nodes.Item(i)->Text), ".bas") Then
@@ -1353,7 +1353,7 @@ Function Compile(Parameter As String = "", bAll As Boolean = False) As Integer
 		'End If
 		Dim As Dictionary CompileCommands
 		If UseWasm Then
-			Dim FbcFolder As UString = GetFolderName(*FbcExe)
+			Dim FbcFolder As UStringX = GetFolderName(*FbcExe)
 			Var Pos1 = InStrRev(*MainFileNameOnly, ".")
 			If Pos1 > 0 Then
 				*MainFileNameOnly = Left(*MainFileNameOnly, Pos1 - 1)
@@ -1641,7 +1641,7 @@ Function Compile(Parameter As String = "", bAll As Boolean = False) As Integer
 		ShowMessages("")
 		If lvProblems.ListItems.Count <> 0 Then
 			tpProblems->Caption = ML("Problems") & IIf(NumberErr + NumberWarning + NumberInfo > 0, " (" & WStr(NumberErr + NumberWarning + NumberInfo) & " " & ML("Pos") & ")", "")
-			Dim As UString Problems
+			Dim As UStringX Problems
 			Problems = IIf(NumberErr > 0, ML("Errors") & " (" & WStr(NumberErr) & " " & ML("Pos") & ")", "")
 			Problems &= IIf(NumberWarning > 0, IIf(Problems = "", "", ", ") & ML("Warnings") & " (" & WStr(NumberWarning) & " " & ML("Pos") & ")", "")
 			Problems &= IIf(NumberInfo > 0, IIf(Problems = "", "", ", ") & ML("Messages") & " (" & WStr(NumberInfo) & " " & ML("Pos") & ")", "")
@@ -1736,7 +1736,7 @@ Sub CreateKeyStore
 		Dim As WString Ptr Workdir, CmdL
 		Dim As ProjectElement Ptr Project
 		Dim As TreeNode Ptr ProjectNode
-		Dim MainFile As UString = GetMainFile(, Project, ProjectNode)
+		Dim MainFile As UStringX = GetMainFile(, Project, ProjectNode)
 		If Project = 0 Then
 			ShowMessages ML("Project not found!")
 			Exit Sub
@@ -1749,7 +1749,7 @@ Sub CreateKeyStore
 		Dim pBuff As WString Ptr
 		Dim As Integer FileSize
 		Open *Project->FileName & "/gradle.properties" For Input As #Fn
-		Dim As UString JavaHome
+		Dim As UStringX JavaHome
 		FileSize = LOF(Fn)
 		WReAllocate(pBuff, FileSize)
 		Do Until EOF(Fn)
@@ -1804,7 +1804,7 @@ Sub GenerateSignedBundleAPK(Parameter As String)
 		Dim Result As Integer
 		Dim As ProjectElement Ptr Project
 		Dim As TreeNode Ptr ProjectNode
-		Dim MainFile As UString = GetMainFile(, Project, ProjectNode)
+		Dim MainFile As UStringX = GetMainFile(, Project, ProjectNode)
 		If CBool(Project <> 0) AndAlso (Not EndsWith(LCase(*Project->FileName), ".vfp")) AndAlso FileExists(*Project->FileName & "/local.properties") Then
 		Else
 			ShowMessages ML("File") & " local.properties " & ML("not found") & "!"
@@ -1812,7 +1812,7 @@ Sub GenerateSignedBundleAPK(Parameter As String)
 		End If
 		Dim As Integer Fn = FreeFile_
 		Open *Project->FileName & "/local.properties" For Input As #Fn
-		Dim SDKDir As UString
+		Dim SDKDir As UStringX
 		Dim pBuff As WString Ptr
 		Dim As Integer FileSize
 		FileSize = LOF(Fn)
@@ -2382,7 +2382,7 @@ Function AddProject(ByRef FileName As WString = "", pFilesList As WStringList Pt
 				ElseIf Parameter = "ControlLibrary" Then
 					Dim As Library Ptr CtlLibrary
 					Dim As Boolean bFinded, bChanged
-					Dim As UString LibraryPath = Mid(Buff, Pos1 + 2, Len(Buff) - Pos1 - 2)
+					Dim As UStringX LibraryPath = Mid(Buff, Pos1 + 2, Len(Buff) - Pos1 - 2)
 					ppe->Components.Add LibraryPath
 					For i As Integer = 0 To ControlLibraries.Count - 1
 						CtlLibrary = ControlLibraries.Item(i)
@@ -2586,7 +2586,7 @@ Sub OpenSession()
 End Sub
 
 Sub AddMRU(ByRef FileFolderName As WString, ByRef MRUFilesFolders As WStringList, miRecentFilesFolders As MenuItem Ptr, ByRef MRUType As String)
-	Dim As UString FileFolderName_
+	Dim As UStringX FileFolderName_
 	If AddRelativePathsToRecent Then
 		FileFolderName_ = GetShortFileName(FileFolderName, ExePath & Slash & Slash)
 	Else
@@ -2606,7 +2606,7 @@ Sub AddMRU(ByRef FileFolderName As WString, ByRef MRUFilesFolders As WStringList
 End Sub
 
 Sub AddMRUAIChat(ByRef FileName As WString)
-	Dim As UString FileName_
+	Dim As UStringX FileName_
 	If AddRelativePathsToRecent Then
 		FileName_ = GetShortFileName(FileName, ExePath & Slash & Slash)
 	Else
@@ -2640,7 +2640,7 @@ Sub AddMRUSession(ByRef FileName As WString)
 	AddMRU FileName, MRUSessions, miRecentSessions, "Sessions"
 End Sub
 
-Function FolderCopy(FromDir As UString, ToDir As UString) As Integer
+Function FolderCopy(FromDir As UStringX, ToDir As UStringX) As Integer
 	Dim As WString * 1024 f, fsrc, fdest
 	Dim As UInteger Attr
 	Dim As WStringList Folders
@@ -3217,7 +3217,7 @@ Sub RunHelp(Param As Any Ptr)
 	#define HH_DISPLAY_TOC     0001
 	#define HH_KEYWORD_LOOKUP  0013
 	#define HH_HELP_CONTEXT    0015
-	Dim As UString CurrentHelpPath
+	Dim As UStringX CurrentHelpPath
 	Dim As Integer IndexDefault
 	Var tb = Cast(TabWindow Ptr, ptabCode->SelectedTab)
 	If Param <> 0 Then CurrentHelpPath = Cast(HelpOptions Ptr, Param)->CurrentPath
@@ -3342,15 +3342,15 @@ Sub AddFromTemplate(ByRef Template As WString)
 				tn1 = GetTreeNodeChild(ptn, Template)
 			End If
 			Dim As String IconName = GetIconName(Template)
-			Dim As UString FileName = Replace(GetFileName(Template), " ", "")
-			Dim As UString FileExt
+			Dim As UStringX FileName = Replace(GetFileName(Template), " ", "")
+			Dim As UStringX FileExt
 			Dim As ExplorerElement Ptr ee
 			Dim Pos1 As Integer = InStrRev(FileName, ".")
 			If Pos1 > 0 Then
 				FileExt = Mid(FileName, Pos1)
 				FileName = Left(FileName, Pos1 - 1)
 			End If
-			Dim NewName As UString
+			Dim NewName As UStringX
 			Dim As Integer n = 0
 			Do
 				n = n + 1
@@ -3439,7 +3439,7 @@ Sub RemoveFileFromProject
 			ee = tn->Tag
 			If ee->FileName> 0 AndAlso Dir(*ee->FileName) <> "" Then
 				'Move the file to temp folds.
-				Dim As UString TempFile = GetUserTempPath(GetFileName(*ee->FileName))
+				Dim As UStringX TempFile = GetUserTempPath(GetFileName(*ee->FileName))
 				If TempFile = "" Then Exit Sub
 				If FileCopy(*ee->FileName, TempFile) <> 0 Then
 					MsgBox "Unable to move file to temporary storage: " & TempFile
@@ -3567,7 +3567,7 @@ Sub SetAsMain(IsTab As Boolean)
 				WLet(ppe->FileName, "")
 				ptn->Tag = ppe
 			ElseIf Not *Cast(ExplorerElement Ptr, ptn->Tag) Is ProjectElement Then
-				Dim As UString FileName = *Cast(ExplorerElement Ptr, ppe)->FileName
+				Dim As UStringX FileName = *Cast(ExplorerElement Ptr, ppe)->FileName
 				_Delete(Cast(ExplorerElement Ptr, ppe))
 				ppe = _New(ProjectElement)
 				WLet(ppe->FileName, FileName)
@@ -4200,11 +4200,11 @@ Function DirExists(ByRef DirPath As WString) As Integer
 	Return (0)
 End Function
 
-Function GetOSPath(ByRef Path As WString) As UString
+Function GetOSPath(ByRef Path As WString) As UStringX
 	Return Replace(Path, BackSlash, Slash)
 End Function
 
-Function GetRelativePath(ByRef Path As WString, ByRef FromFile As WString = "") As UString
+Function GetRelativePath(ByRef Path As WString, ByRef FromFile As WString = "") As UStringX
 	If CInt(InStr(Path, ":") > 0) OrElse CInt(StartsWith(Path, "/")) OrElse CInt(StartsWith(Path, "\")) Then
 		Return GetOSPath(Path)
 	ElseIf StartsWith(Path, "./") OrElse StartsWith(Path, ".\") Then
@@ -4216,11 +4216,11 @@ Function GetRelativePath(ByRef Path As WString, ByRef FromFile As WString = "") 
 	ElseIf StartsWith(Path, "../") OrElse StartsWith(Path, "..\") Then
 		Return GetOSPath(GetFolderName(GetFolderName(FromFile)) & Mid(Path, 4))
 	End If
-	Dim Result As UString = GetOSPath(GetFolderName(FromFile) & Path)
+	Dim Result As UStringX = GetOSPath(GetFolderName(FromFile) & Path)
 	If GetFolderName(FromFile) <> "" AndAlso FileExists(Result) Then
 		Return Result
 	Else
-		Dim Result As UString = GetOSPath(ExePath & Slash & Path)
+		Dim Result As UStringX = GetOSPath(ExePath & Slash & Path)
 		If FileExists(Result) Then
 			Return Result
 		Else
@@ -4272,8 +4272,8 @@ Function WithoutPointers(ByRef e As String) As String
 	End If
 End Function
 
-Function WithoutQuotes(ByRef e As UString) As UString
-	Dim As UString s = e
+Function WithoutQuotes(ByRef e As UStringX) As UStringX
+	Dim As UStringX s = e
 	If StartsWith(s, """") Then s = Mid(s, 2)
 	If EndsWith(s, """") Then s = Left(s, Len(s) - 1)
 	Return Replace(s, """""", """")
@@ -4291,9 +4291,9 @@ Function DeleteSpaces(b As String) As String
 	Return bNew
 End Function
 
-Function GetRelative(ByRef FileName As WString, ByRef FromFile As WString) As UString
+Function GetRelative(ByRef FileName As WString, ByRef FromFile As WString) As UStringX
 	If StartsWith(FileName, FromFile) Then
-		Dim As UString Path = Mid(FileName, Len(FromFile) + 1)
+		Dim As UStringX Path = Mid(FileName, Len(FromFile) + 1)
 		If StartsWith(Path, "\") OrElse StartsWith(Path, "/") Then Path = Mid(Path, 2)
 		Return Path
 	Else Return FileName
@@ -4609,7 +4609,7 @@ Sub LoadFunctions(ByRef Path As WString, LoadParameter As LoadParam = FilePathAn
 					CurrentCondition = ""
 				ElseIf StartsWith(bTrimLCase & " ", "#define ") Then
 					If Not InFunc Then
-						Dim As UString b2 = Trim(Mid(bTrim, 9))
+						Dim As UStringX b2 = Trim(Mid(bTrim, 9))
 						Pos1 = InStr(b2, " ")
 						Pos2 = InStr(b2, "(")
 						Pos3 = InStr(b2, ")")
@@ -5869,7 +5869,7 @@ Sub LoadHelp
 			LineNumber += 1
 			Line Input #Fn, Buff
 			If Trim(Buff) = "" Then Continue Do
-			Dim As UString res(Any)
+			Dim As UStringX res(Any)
 			Pos1 = InStr(Buff, " — ")
 			bAsmCommand = False
 			If Pos1 > 0 Then
@@ -5938,14 +5938,14 @@ Sub LoadHelp
 End Sub
 
 Sub LoadSnippets
-	Dim As UString f
+	Dim As UStringX f
 	f = Dir(ExePath & "/Settings/Snippets/*.ini")
 	While f <> ""
 		Dim As Integer i, Pos1, Pos2, Pos3
 		Dim As Integer Fn = FreeFile_, Result
 		Dim As WString * 2048 Buff, Parameters, NewParameters
 		Dim As TypeElement Ptr te, teParam
-		Dim As UString FileName = ExePath & "/Settings/Snippets/" & f
+		Dim As UStringX FileName = ExePath & "/Settings/Snippets/" & f
 		Result = Open(FileName For Input Encoding "utf-8" As #Fn)
 		If Result <> 0 Then Result = Open(FileName For Input Encoding "utf-16" As #Fn)
 		If Result <> 0 Then Result = Open(FileName For Input Encoding "utf-32" As #Fn)
@@ -6056,7 +6056,7 @@ Sub LoadToolBox(ForLibrary As Library Ptr = 0)
 	Dim As Integer i, j
 	Dim As My.Sys.Drawing.Cursor cur
 	Dim As String IncludePath
-	Dim As UString MFF, Temp
+	Dim As UStringX MFF, Temp
 	Dim As UInteger Attr
 	Dim As Library Ptr MFFCtlLibrary
 	#ifndef __USE_GTK__
@@ -6714,7 +6714,7 @@ Sub LoadToolBox(ForLibrary As Library Ptr = 0)
 				For k As Integer = 0 To tbi->Elements.Count - 1
 					te1 = tbi->Elements.Object(k)
 					If te1 = 0 Then Continue For
-					Dim As UString Comment = IIf(te1->Value = "", "Required. ", "Optional. ")
+					Dim As UStringX Comment = IIf(te1->Value = "", "Required. ", "Optional. ")
 					Dim As Boolean bFinded
 					For kk As Integer = iLine To UBound(Lines)
 						If LCase(Trim(*Lines(kk), Any !"\t ")) = LCase(tbi->Elements.Item(k)) Then
@@ -7252,7 +7252,7 @@ Sub UpdateAllTabWindows
 End Sub
 
 Sub LoadSettings
-	Dim As UString Temp
+	Dim As UStringX Temp
 	Dim As ToolType Ptr Tool
 	Dim As ModelInfo Ptr Info
 	Dim i As Integer = 0
@@ -7403,7 +7403,7 @@ Sub LoadSettings
 	DisplayWarningsInDebug = iniSettings.ReadBool("Options", "DisplayWarningsInDebug", False)
 	TurnOnEnvironmentVariables = iniSettings.ReadBool("Options", "TurnOnEnvironmentVariables", True)
 	WLet(EnvironmentVariables, iniSettings.ReadString("Options", "EnvironmentVariables"))
-	Dim As UString LoadedProjectsPath = iniSettings.ReadString("Options", "ProjectsPath", "%USERDOCUMENTS%/Visual FB Editor Projects")
+	Dim As UStringX LoadedProjectsPath = iniSettings.ReadString("Options", "ProjectsPath", "%USERDOCUMENTS%/Visual FB Editor Projects")
 	#ifdef __USE_GTK__
 		If LoadedProjectsPath = "./Projects" Then LoadedProjectsPath = "%USERDOCUMENTS%/Visual FB Editor Projects"
 	#endif
@@ -7523,7 +7523,7 @@ Sub LoadSettings
 End Sub
 
 Sub LoadLanguageTexts
-	Dim As UString appDataSettings = GetUserDataPath("Settings/" & GetFileName(SettingsPath))
+	Dim As UStringX appDataSettings = GetUserDataPath("Settings/" & GetFileName(SettingsPath))
 	If appDataSettings = "" Then Exit Sub
 	If Not FileExists(appDataSettings) Then
 		If Not CopyFileToPath(SettingsPath, appDataSettings) Then
@@ -7642,7 +7642,7 @@ Sub LoadLanguageTexts
 End Sub
 
 Sub LoadHotKeys
-	Dim As UString appDataSettingsHotKeys = GetUserDataPath("Settings/Others/HotKeys.txt")
+	Dim As UStringX appDataSettingsHotKeys = GetUserDataPath("Settings/Others/HotKeys.txt")
 	If appDataSettingsHotKeys = "" Then Exit Sub
 	If Not FileExists(appDataSettingsHotKeys) Then
 		If Not CopyFileToPath(ExePath & "/Settings/Others/HotKeys.txt", appDataSettingsHotKeys) Then
@@ -8270,7 +8270,7 @@ Sub CreateMenusAndToolBars
 	Dim As WString * 1024 Buff
 	Dim As MenuItem Ptr mi
 	Dim As UserToolType Ptr tt
-	Dim As UString ToolsINI, LegacyToolsINI
+	Dim As UStringX ToolsINI, LegacyToolsINI
 	#ifdef __USE_GTK__
 		ToolsINI = GetUserDataPath("Tools/ToolsX.ini")
 		LegacyToolsINI = ExePath & "/Tools/ToolsX.ini"
@@ -8847,17 +8847,17 @@ End Sub
 	'scrTool.OnResize = @pnlToolBox_Resize
 #endif
 
-Function ToolType.GetCommand(ByRef FileName As WString = "", WithoutProgram As Boolean = False) As UString
+Function ToolType.GetCommand(ByRef FileName As WString = "", WithoutProgram As Boolean = False) As UStringX
 	Dim As ProjectElement Ptr Project
 	Dim As ExplorerElement Ptr ee
 	Dim As TreeNode Ptr ProjectNode
 	Dim As TabWindow Ptr tb = Cast(TabWindow Ptr, ptabCode->SelectedTab)
-	Dim As UString ProjectFile = ""
-	Dim As UString CompileLine, MainFile = GetMainFile(, Project, ProjectNode)
-	Dim As UString FirstLine = GetFirstCompileLine(MainFile, Project, CompileLine)
-	Dim As UString ExeFile = GetExeFileName(MainFile, CompileLine & " " & FirstLine)
-	Dim As UString CurrentWord = ""
-	Dim As UString Params
+	Dim As UStringX ProjectFile = ""
+	Dim As UStringX CompileLine, MainFile = GetMainFile(, Project, ProjectNode)
+	Dim As UStringX FirstLine = GetFirstCompileLine(MainFile, Project, CompileLine)
+	Dim As UStringX ExeFile = GetExeFileName(MainFile, CompileLine & " " & FirstLine)
+	Dim As UStringX CurrentWord = ""
+	Dim As UStringX Params
 	If Trim(This.Path) <> "" AndAlso Not WithoutProgram Then
 		'#ifdef __USE_GTK__
 		'	If Not g_find_program_in_path(ToUTF8(This.Path)) = NULL Then
@@ -8917,7 +8917,7 @@ Sub tvExplorer_NodeActivate(ByRef Designer As My.Sys.Object, ByRef Sender As Con
 		Else
 			Dim As Integer Pos1 = InStrRev(*ee->FileName, ".")
 			If Pos1 > 0 Then
-				Dim As UString Extension = Mid(*ee->FileName, Pos1)
+				Dim As UStringX Extension = Mid(*ee->FileName, Pos1)
 				For i As Integer = 0 To pOtherEditors->Count - 1
 					Dim As ToolType Ptr Tool = pOtherEditors->Item(i)->Object
 					If InStr(" " & LCase(Tool->Extensions) & ",", " " & LCase(Extension) & ",") > 0 Then
@@ -9143,7 +9143,7 @@ Sub tvExplorer_AfterLabelEdit(ByRef Designer As My.Sys.Object, ByRef Sender As T
 		Dim As ProjectElement Ptr ppe = Item.Tag
 		If ppe <> 0 AndAlso *ppe->FileName <> "" Then
 			Dim As Boolean bModified = EndsWith(NodeLabel, "*")
-			Dim As UString bFileName = GetFolderName(*ppe->FileName) & NodeLabel
+			Dim As UStringX bFileName = GetFolderName(*ppe->FileName) & NodeLabel
 			If bModified Then
 				bFileName = Left(bFileName, Len(bFileName) - 1)
 			End If
@@ -9170,7 +9170,7 @@ Sub tvExplorer_AfterLabelEdit(ByRef Designer As My.Sys.Object, ByRef Sender As T
 		Dim As Boolean bModified
 		If ee <> 0 AndAlso *ee->FileName <> "" Then
 			bModified = EndsWith(NodeLabel, "*")
-			Dim As UString bFileName = GetFolderName(*ee->FileName) & NodeLabel
+			Dim As UStringX bFileName = GetFolderName(*ee->FileName) & NodeLabel
 			If bModified Then
 				bFileName = Left(bFileName, Len(bFileName) - 1)
 			End If
@@ -9376,7 +9376,7 @@ Function SetVisibleToTreeNode(Node As TreeNode Ptr, ByRef SearchText As WString)
 End Function
 
 Sub txtExplorer_Change(ByRef Designer As My.Sys.Object, Sender As TextBox)
-	Dim As UString SearchText = Trim(LCase(txtExplorer.Text))
+	Dim As UStringX SearchText = Trim(LCase(txtExplorer.Text))
 	For i As Integer = 0 To tvExplorer.Nodes.Count - 1
 		SetVisibleToTreeNode(tvExplorer.Nodes.Item(i), SearchText)
 	Next
@@ -9403,7 +9403,7 @@ pnlToolBox.OnResize = @pnlToolBox_Resize
 
 Sub txtForm_Change(ByRef Designer As My.Sys.Object, Sender As TextBox)
 	Dim As Boolean bVisible
-	Dim As UString SearchText = Trim(LCase(txtForm.Text))
+	Dim As UStringX SearchText = Trim(LCase(txtForm.Text))
 	For i As Integer = 0 To tbToolBox.Groups.Count - 1
 		For j As Integer = 0 To tbToolBox.Groups.Item(i)->Buttons.Count - 1
 			bVisible =  SearchText = "" OrElse InStr(LCase(tbToolBox.Groups.Item(i)->Buttons.Item(j)->Caption), SearchText) > 0
@@ -10427,7 +10427,7 @@ Public Sub AIResetContext()
 			End If
 		End If
 		If RecentAIChat Then FileName = *RecentAIChat Else FileName = FormatFileName(tmpName) & Format(Now, "_yyyymmdd_hhmm") & ".md"
-		Dim As UString ChatDirectory = GetAIChatDirectory()
+		Dim As UStringX ChatDirectory = GetAIChatDirectory()
 		If ChatDirectory = "" Then Exit Sub
 		AIMessages.SaveToFile(ChatDirectory & FileName)
 		If Not MRUAIChat.Contains(FileName) Then
@@ -11155,7 +11155,7 @@ Sub lvVar_ItemExpanding(ByRef Designer As My.Sys.Object, ByRef Sender As TreeLis
 		ptabBottom->UpdateLock
 		Dim lvItem As TreeListViewItem Ptr
 		Dim As WString Ptr p = @Item->Text(1)
-		Dim As UString sText
+		Dim As UStringX sText
 		Dim As Boolean b
 		Dim As Integer iCount, Pos1, Pos2
 		Item->Nodes.Clear
@@ -11477,7 +11477,7 @@ End Function
 
 Sub txtProperties_Change(ByRef Designer As My.Sys.Object, Sender As TextBox)
 	tabRight.UpdateLock
-	Dim As UString SearchText = Trim(LCase(txtProperties.Text))
+	Dim As UStringX SearchText = Trim(LCase(txtProperties.Text))
 	For i As Integer = 0 To lvProperties.Nodes.Count - 1
 		SetVisibleToTreeListViewItem(lvProperties, lvProperties.Nodes.Item(i), SearchText)
 	Next
@@ -11486,7 +11486,7 @@ End Sub
 
 Sub txtEvents_Change(ByRef Designer As My.Sys.Object, Sender As TextBox)
 	tabRight.UpdateLock
-	Dim As UString SearchText = Trim(LCase(txtEvents.Text))
+	Dim As UStringX SearchText = Trim(LCase(txtEvents.Text))
 	For i As Integer = 0 To lvEvents.Nodes.Count - 1
 		SetVisibleToTreeListViewItem(lvEvents, lvEvents.Nodes.Item(i), SearchText)
 	Next
@@ -12106,7 +12106,7 @@ pnlBottomPin.Parent = @pnlBottom
 		Dim As Integer CharHeight = Canvas.TextHeight("P")
 		Dim As Integer CharWidth = Canvas.TextWidth("P")
 		Dim As Integer CharsCount = (CanvasWidth - PageSetupD.LeftMargin - PageSetupD.RightMargin) / CharWidth, LinesCount = 0, LineCharsCount, SpacePos
-		Dim As UString sLine, sLineToPrint
+		Dim As UStringX sLine, sLineToPrint
 		For i As Integer = iLine To tb->txtCode.LinesCount - 1
 			sLine = Replace(tb->txtCode.Lines(i), !"\t", Space(TabWidth))
 			LineCharsCount = Len(sLine)
@@ -12919,7 +12919,7 @@ Sub frmMain_Close(ByRef Designer As My.Sys.Object, ByRef Sender As Form, ByRef A
 	FormClosing = True
 	If AIMessages.Count > 0 Then
 		Dim As WString * MAX_PATH FileName = IIf(RecentAIChat, *RecentAIChat, Mid(FormatFileName(Left(AIMessages.Item(0)->Key, 50)) & Format(Now, "yyyymmdd_hhmm") & ".md", 16))
-		Dim As UString ChatDirectory = GetAIChatDirectory()
+		Dim As UStringX ChatDirectory = GetAIChatDirectory()
 		If ChatDirectory = "" Then Action = 0: Return
 		If Not MRUAIChat.Contains(FileName) Then
 			MRUAIChat.Add FileName

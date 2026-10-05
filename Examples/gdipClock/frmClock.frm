@@ -98,7 +98,7 @@
 		mnuProfileList(Any) As MenuItem Ptr
 		mProfileName As WString Ptr
 		mProfileExt As WString Ptr = @WStr(".prf")
-		Declare Function ProfileDefLoad() As UString  '获得默认Profile
+		Declare Function ProfileDefLoad() As UStringX  '获得默认Profile
 		Declare Function ProfileIdx(ByVal fDefNum As Integer = -1) As Integer   '索引+1
 		Declare Function ProfileLoad(sFileName As WString, sKeyValue() As WString Ptr) As Boolean   '加载Profile
 		Declare Sub Clock2Interface()   '将时钟参数显示在界面上
@@ -2431,10 +2431,10 @@ Private Sub frmClockType.Clock2Interface()
 	mnuMonthWeek.Checked = frmMonth.mMonth.mShowWeeks
 End Sub
 
-Private Function frmClockType.ProfileDefLoad() As UString
+Private Function frmClockType.ProfileDefLoad() As UStringX
 	Dim sProfile As WString Ptr
 	TextFromFile(FullNameFromFile("gdipClock.ini"), sProfile)
-	Dim As UString rtn = *sProfile
+	Dim As UStringX rtn = *sProfile
 	Deallocate(sProfile)
 	If rtn = "" Then
 		Return FullNameFromFile("gdipClock.prf")

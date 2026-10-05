@@ -312,11 +312,11 @@ Private Sub frmImageManager.cmdOK_Click(ByRef Sender As Control)
 			Dim As Boolean bStarted, bInWith, bFirstAddPosInWith, bLastPropertyPosInWith
 			Dim As Integer p1, EndConstructorPos, LastPropertyPos, FirstAddPos, PosForAdd
 			Dim As String sLeft, sText, sRight, sLeftEndConstructorPos, sLeftFirstAddPos, sLeftLastPropertyPos
-			Dim As UString DesignControlName
+			Dim As UStringX DesignControlName
 			Dim As SymbolsType Ptr stDesignControl = Des->Symbols(Des->DesignControl)
 			If stDesignControl AndAlso stDesignControl->ReadPropertyFunc Then DesignControlName = QWString(stDesignControl->ReadPropertyFunc(Des->DesignControl, "Name"))
-			Dim As UString ImageListName = QWString(st->ReadPropertyFunc(CurrentImageList, "Name"))
-			Dim As UString b, bOrig
+			Dim As UStringX ImageListName = QWString(st->ReadPropertyFunc(CurrentImageList, "Name"))
+			Dim As UStringX b, bOrig
 			Dim As IntegerList iList
 			tb->txtCode.Changing("ImageList")
 			For i As Integer = 0 To tb->txtCode.Content.Lines.Count - 1
@@ -494,7 +494,7 @@ End Sub
 Private Sub frmImageManager.lvImages_SelectedItemChanged(ByRef Sender As ListView, ByVal ItemIndex As Integer)
 	If CurrentImageList = 0 Then
 		If ItemIndex < 0 Then Exit Sub
-		Dim As UString Path = GetRelativePath(lvImages.ListItems.Item(ItemIndex)->Text(2), ResourceFile)
+		Dim As UStringX Path = GetRelativePath(lvImages.ListItems.Item(ItemIndex)->Text(2), ResourceFile)
 		Select Case lvImages.ListItems.Item(ItemIndex)->Text(1)
 		Case "BITMAP": imgImage.Graphic.Bitmap.LoadFromFile(Path)
 		Case "PNG", "RCDATA": imgImage.Graphic.Bitmap.LoadFromFile(Path)
@@ -514,8 +514,8 @@ Private Sub frmImageManager.MenuItemClick(ByRef Sender As My.Sys.Object)
 		pfImageManager->lvImages.MultiSelect = True
 		If pfImageManager->ShowModal(Me) = ModalResults.OK Then
 			For i As Integer = 0 To pfImageManager->SelectedItems.Count - 1
-				Dim As UString ResourceName = Cast(ListViewItem Ptr, pfImageManager->SelectedItems.Item(i))->Text(0)
-				Dim As UString RelativePath = GetResNamePath(ResourceName, ResourceFile)
+				Dim As UStringX ResourceName = Cast(ListViewItem Ptr, pfImageManager->SelectedItems.Item(i))->Text(0)
+				Dim As UStringX RelativePath = GetResNamePath(ResourceName, ResourceFile)
 				Dim As String NewName = ResourceName
 				Var n = 0
 				Do While lvImages.ListItems.IndexOf(NewName) > -1
@@ -538,9 +538,9 @@ Private Sub frmImageManager.MenuItemClick(ByRef Sender As My.Sys.Object)
 		OpenD.Filter = ML("Image Files") & " (*.bmp, *.cur, *.ico, *.png)|*.bmp;*.cur;*.ico;*.png|" & ML("All Files") & "|*.*|"
 		If OpenD.Execute Then
 			For i As Integer = 0 To OpenD.FileNames.Count - 1
-				Dim As UString FileName = OpenD.FileNames.Item(i)
-				Dim As UString RelativePath = GetRelativePath(FileName, ResourceFile)
-				Dim As UString Key = GetFileName(FileName)
+				Dim As UStringX FileName = OpenD.FileNames.Item(i)
+				Dim As UStringX RelativePath = GetRelativePath(FileName, ResourceFile)
+				Dim As UStringX Key = GetFileName(FileName)
 				Dim As String FileExt, ResourceType
 				Var Pos1 = InStrRev(Key, ".")
 				If Pos1 > 0 Then
@@ -578,9 +578,9 @@ Private Sub frmImageManager.tbToolbar_ButtonClick(ByRef Sender As ToolBar,ByRef 
 			OpenD.Filter = ML("Image Files") & " (*.bmp, *.cur, *.ico, *.png)|*.bmp;*.cur;*.ico;*.png|" & ML("All Files") & "|*.*|"
 			If OpenD.Execute Then
 				For i As Integer = 0 To OpenD.FileNames.Count - 1
-					Dim As UString FileName = OpenD.FileNames.Item(i)
-					Dim As UString RelativePath = GetRelativePath(FileName, ResourceFile)
-					Dim As UString Key = GetFileName(FileName)
+					Dim As UStringX FileName = OpenD.FileNames.Item(i)
+					Dim As UStringX RelativePath = GetRelativePath(FileName, ResourceFile)
+					Dim As UStringX Key = GetFileName(FileName)
 					Dim As String FileExt, ResourceType
 					Var Pos1 = InStrRev(Key, ".")
 					If Pos1 > 0 Then
@@ -646,7 +646,7 @@ Private Sub frmImageManager.tbToolbar_ButtonClick(ByRef Sender As ToolBar,ByRef 
 		If i < 1 Then Exit Sub
 		Dim As ListViewItem Ptr ItemCurr = lvImages.SelectedItem, ItemPrev = lvImages.ListItems.Item(i - 1)
 		Dim As Integer TempIndex = ItemPrev->ImageIndex
-		Dim As UString Temp0 = ItemPrev->Text(0), Temp1 = ItemPrev->Text(1), Temp2 = ItemPrev->Text(2)
+		Dim As UStringX Temp0 = ItemPrev->Text(0), Temp1 = ItemPrev->Text(1), Temp2 = ItemPrev->Text(2)
 		ItemPrev->ImageIndex = ItemCurr->ImageIndex
 		ItemPrev->Text(0) = ItemCurr->Text(0)
 		ItemPrev->Text(1) = ItemCurr->Text(1)
@@ -661,7 +661,7 @@ Private Sub frmImageManager.tbToolbar_ButtonClick(ByRef Sender As ToolBar,ByRef 
 		If i < 0 OrElse i >= lvImages.ListItems.Count - 1 Then Exit Sub
 		Dim As ListViewItem Ptr ItemCurr = lvImages.SelectedItem, ItemNext = lvImages.ListItems.Item(i + 1)
 		Dim As Integer TempIndex = ItemNext->ImageIndex
-		Dim As UString Temp0 = ItemNext->Text(0), Temp1 = ItemNext->Text(1), Temp2 = ItemNext->Text(2)
+		Dim As UStringX Temp0 = ItemNext->Text(0), Temp1 = ItemNext->Text(1), Temp2 = ItemNext->Text(2)
 		ItemNext->ImageIndex = ItemCurr->ImageIndex
 		ItemNext->Text(0) = ItemCurr->Text(0)
 		ItemNext->Text(1) = ItemCurr->Text(1)
@@ -704,8 +704,8 @@ Private Sub frmImageManager.Form_Create(ByRef Sender As Control)
 	SelectedItems.Clear
 	Dim As ProjectElement Ptr Project
 	Dim As TreeNode Ptr ProjectNode
-	Dim As UString CompileLine, MainFile = GetMainFile(, Project, ProjectNode, WithoutMainNode), FolderName
-	Dim sFirstLine As UString = GetFirstCompileLine(MainFile, Project, CompileLine)
+	Dim As UStringX CompileLine, MainFile = GetMainFile(, Project, ProjectNode, WithoutMainNode), FolderName
+	Dim sFirstLine As UStringX = GetFirstCompileLine(MainFile, Project, CompileLine)
 	lvImages.ListItems.Clear
 	ImageList1.Clear
 	ResourceFile = GetResourceFile(WithoutMainNode)
@@ -786,10 +786,10 @@ Private Sub frmImageManager.Form_Create(ByRef Sender As Control)
 				Dim As Integer p1
 				Dim As String sRight, sText
 				Dim As SymbolsType Ptr stDesignControl = Des->Symbols(Des->DesignControl)
-				Dim As UString DesignControlName
+				Dim As UStringX DesignControlName
 				If stDesignControl AndAlso stDesignControl->ReadPropertyFunc Then DesignControlName = QWString(stDesignControl->ReadPropertyFunc(Des->DesignControl, "Name"))
-				Dim As UString ImageListName = QWString(st->ReadPropertyFunc(CurrentImageList, "Name"))
-				Dim As UString b, bOrig
+				Dim As UStringX ImageListName = QWString(st->ReadPropertyFunc(CurrentImageList, "Name"))
+				Dim As UStringX b, bOrig
 				For i As Integer = 0 To tb->txtCode.Content.Lines.Count - 1
 					ECLine = tb->txtCode.Content.Lines.Items[i]
 					b = LTrim(LCase(*ECLine->Text), Any !"\t ")

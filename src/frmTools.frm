@@ -246,7 +246,7 @@ End Destructor
 
 Private Sub frmTools.cmdOK_Click(ByRef Designer As My.Sys.Object, ByRef Sender As Control)
 	Dim As Integer Fn = FreeFile_, Result
-	Dim As UString ToolsINI
+	Dim As UStringX ToolsINI
 	Dim As UserToolType Ptr Tool, tt
 	Dim As MenuItem Ptr mi
 	Dim As Integer ToolsIndex

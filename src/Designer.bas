@@ -2190,7 +2190,7 @@ Namespace My.Sys.Forms
 						'						.Rectangle Rects(RectsCount)
 						'					End If
 						If ImagesListHandle <> 0 Then
-							Dim As UString ImageKey = WGet(st->ReadPropertyFunc(Ctrls(RectsCount), "ImageKey"))
+							Dim As UStringX ImageKey = WGet(st->ReadPropertyFunc(Ctrls(RectsCount), "ImageKey"))
 							Dim As Integer ImageIndex = QInteger(st->ReadPropertyFunc(Ctrls(RectsCount), "ImageIndex"))
 							If ImageKey <> "" Then
 								Dim As SymbolsType Ptr st = Symbols(ImagesList)
@@ -2325,7 +2325,7 @@ Namespace My.Sys.Forms
 					End If
 					
 					Dim As Integer BandType = QInteger(st->ReadPropertyFunc(Band, "BandType"))
-					Dim As UString GroupField = WGet(st->ReadPropertyFunc(Band, "GroupField"))
+					Dim As UStringX GroupField = WGet(st->ReadPropertyFunc(Band, "GroupField"))
 					Dim As String Caption
 					Select Case BandType
 					Case 0: Caption = ML("Report Header")

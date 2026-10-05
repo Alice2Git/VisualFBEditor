@@ -513,7 +513,7 @@ Private Sub frmAIAgentType.cmdOK_Click(ByRef Sender As Control)
 	If Not cboAIAgentProvider.Contains(cboAIAgentProvider.Text) Then cboAIAgentProvider.AddItem cboAIAgentProvider.Text
 	If Not cboAIAgentModelName.Contains(cboAIAgentModelName.Text) Then cboAIAgentModelName.AddItem cboAIAgentModelName.Text
 	If Not cboAIAgentAddress.Contains(cboAIAgentModelName.Text) Then cboAIAgentAddress.AddItem cboAIAgentAddress.Text
-	Dim As UString FileName
+	Dim As UStringX FileName
 	FileName = GetUserDataPath("AIAgent/ModelName.ini")
 	If FileName = "" Then Exit Sub
 	cboAIAgentModelName.SaveToFile(FileName)
@@ -559,9 +559,9 @@ Private Sub frmAIAgentType.Form_Create(ByRef Sender As Control)
 	cboAIAgentContentSize.AddItem "128"
 	cboAIAgentPort.Text = Temp
 	Temp = cboAIAgentModelName.Text
-	Dim As UString tmpName = GetUserDataPath("AIAgent/ModelName.ini")
+	Dim As UStringX tmpName = GetUserDataPath("AIAgent/ModelName.ini")
 	If tmpName = "" Then Exit Sub
-	Dim As UString legacyName = ExePath & "/Resources/AIAgent/ModelName.ini"
+	Dim As UStringX legacyName = ExePath & "/Resources/AIAgent/ModelName.ini"
 	If Not FileExists(tmpName) AndAlso FileExists(legacyName) Then
 		If FileCopy(legacyName, tmpName) <> 0 Then MsgBox "Unable to migrate AI model list to: " & tmpName
 	End If

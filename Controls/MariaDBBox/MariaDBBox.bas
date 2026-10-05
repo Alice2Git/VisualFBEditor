@@ -66,7 +66,7 @@ End Function
 		Function = MARIADB_CLIENT_VERSION_STR
 	End Function
 	
-	Function MariaDBBox.SetKey(newkey As UString) As Boolean
+	Function MariaDBBox.SetKey(newkey As UStringX) As Boolean
 		Dim m_DB As MYSQL Ptr = FMYSQL
 		If m_DB = NULL Then ErrStr = "Base not opened": This.Event_Send(12, ErrStr)  : Return False
 		ErrStr = ""
@@ -166,7 +166,7 @@ End Function
 		Function = nColumns
 	End Function
 	
-	Function MariaDBBox.Find(Table As UString, Cond As UString, rs() As String, Col As UString = "*", Orderby As UString = "", Page As Long = 1, Pagesize As Long = 0) As Long
+	Function MariaDBBox.Find(Table As UStringX, Cond As UStringX, rs() As String, Col As UStringX = "*", Orderby As UStringX = "", Page As Long = 1, Pagesize As Long = 0) As Long
 		Dim m_DB As MYSQL Ptr = FMYSQL
 		If m_DB = NULL    Then ErrStr = "Base not opened": This.Event_Send(12, ErrStr): Return 0
 		If Len(Table) = 0 Then ErrStr = "Table name is empty": This.Event_Send(12, ErrStr): Return 0
@@ -195,7 +195,7 @@ End Function
 		End If
 		Function = SQLFind(Sql_Utf8,rs_Utf8())
 	End Function
-	Function MariaDBBox.FindByte(Table As UString, Cond As UString, rs() As String, rs_Types() As Long, Col As UString = "*", Orderby As UString = "", Page As Long = 1, Pagesize As Long = 0) As Long
+	Function MariaDBBox.FindByte(Table As UStringX, Cond As UStringX, rs() As String, rs_Types() As Long, Col As UStringX = "*", Orderby As UStringX = "", Page As Long = 1, Pagesize As Long = 0) As Long
 		Function = This.FindByteUtf(ToUtf8(Table), ToUtf8(Cond), rs(), rs_Types(), ToUtf8(Col), ToUtf8(Orderby), Page, Pagesize)
 	End Function
 	Function MariaDBBox.FindByteUtf(Table_Utf8 As String, Cond_Utf8 As String, rs_Utf8() As String, rs_Types() As Long, Col_Utf8 As String = "*", Orderby_Utf8 As String = "", Page As Long = 1, Pagesize As Long = 0) As Long
@@ -269,7 +269,7 @@ End Function
 		mysql_free_result(res)
 		Function = yu
 	End Function
-	Function MariaDBBox.FindOneByte(Table As UString, Cond As UString, rs_Utf8() As String, rs_Types() As Long, Col As UString = "*", Orderby As UString = "") As Long
+	Function MariaDBBox.FindOneByte(Table As UStringX, Cond As UStringX, rs_Utf8() As String, rs_Types() As Long, Col As UStringX = "*", Orderby As UStringX = "") As Long
 		Function = This.FindOneByteUtf(ToUtf8(Table), ToUtf8(Cond), rs_Utf8(), rs_Types(), ToUtf8(Col), ToUtf8(Orderby))
 	End Function
 	Function MariaDBBox.FindOneByteUtf(Table_Utf8 As String, Cond_Utf8 As String, rs_Utf8() As String, rs_Types() As Long, Col_Utf8 As String = "*", Orderby_Utf8 As String = "") As Long
@@ -339,7 +339,7 @@ End Function
 		Function = u
 	End Function
 	
-	Function MariaDBBox.FindOne(Table As UString,Cond As UString,rs() As String,Col As UString = "*",Orderby As UString = "") As Long
+	Function MariaDBBox.FindOne(Table As UStringX,Cond As UStringX,rs() As String,Col As UStringX = "*",Orderby As UStringX = "") As Long
 		If FMYSQL = 0 Then ErrStr = "Base not opened": This.Event_Send(12, ErrStr): Return 0
 		
 		If Len(Table) = 0 Then ErrStr = "Table name is empty": This.Event_Send(12, ErrStr): Return 0
@@ -361,7 +361,7 @@ End Function
 		Sql_Utf8 &= " LIMIT 1"
 		Function = SQLFindOne(Sql_Utf8,rs_Utf8())
 	End Function
-	Function MariaDBBox.FindOnly(Table As UString, Cond As UString, Col As UString = "*", Orderby As UString = "") As String
+	Function MariaDBBox.FindOnly(Table As UStringX, Cond As UStringX, Col As UStringX = "*", Orderby As UStringX = "") As String
 		Dim rs() As String
 		If This.FindOne(Table, Cond, rs(), Col, Orderby) Then
 			Return rs(0)
@@ -373,7 +373,7 @@ End Function
 			Return rs(0)
 		End If
 	End Function
-	Function MariaDBBox.Insert(Table As UString, nList As UString) As Long
+	Function MariaDBBox.Insert(Table As UStringX, nList As UStringX) As Long
 		Dim Table_Utf8 As String = ToUtf8(Table)
 		Dim nList_Utf8 As String = ToUtf8(nList)
 		Function = This.InsertUtf(Table_Utf8, nList_Utf8)
@@ -454,13 +454,13 @@ End Function
 		End If
 		Function = mysql_affected_rows(m_DB)
 	End Function
-	Function MariaDBBox.AddItem(Table As UString, nList As UString) As Long
+	Function MariaDBBox.AddItem(Table As UStringX, nList As UStringX) As Long
 		Function = This.Insert(Table, nList)
 	End Function
 	Function MariaDBBox.AddItemUtf(Table_Utf8 As String, nList_Utf8 As String) As Long
 		Function = This.InsertUtf(Table_Utf8, nList_Utf8)
 	End Function
-	Function MariaDBBox.Update(Table As UString, Cond As UString, upList As UString) As Long
+	Function MariaDBBox.Update(Table As UStringX, Cond As UStringX, upList As UStringX) As Long
 		Dim Table_Utf8  As String = ToUtf8(Table)
 		Dim Cond_Utf8   As String = ToUtf8(Cond)
 		Dim upList_Utf8 As String = ToUtf8(upList)
@@ -474,7 +474,7 @@ End Function
 		Dim Sql_Utf8 As String = "UPDATE " & Table_Utf8 & " SET " & upList_Utf8 & " WHERE " & Cond_Utf8
 		Function = This.Exec(Sql_Utf8)
 	End Function
-	Function MariaDBBox.UpdateByte(Table As UString, Cond As UString, ColName As UString, nByte As Any Ptr, nLen As Long) As Long
+	Function MariaDBBox.UpdateByte(Table As UStringX, Cond As UStringX, ColName As UStringX, nByte As Any Ptr, nLen As Long) As Long
 		Function = This.UpdateByteUtf(ToUtf8(Table), ToUtf8(Cond), ToUtf8(ColName), nByte, nLen)
 	End Function
 	Function MariaDBBox.UpdateByteUtf(Table_Utf8 As String, Cond_Utf8 As String, ColName_Utf8 As String, nByte As Any Ptr, nLen As Long) As Long
@@ -525,7 +525,7 @@ End Function
 		Function  = 0
 	End Function
 	
-	Function MariaDBBox.UpdateText(Table As UString, Cond As UString, ColName As UString, Text_Utf8 As String) As Long
+	Function MariaDBBox.UpdateText(Table As UStringX, Cond As UStringX, ColName As UStringX, Text_Utf8 As String) As Long
 		Function = This.UpdateTextUtf(ToUtf8(Table), ToUtf8(Cond), ToUtf8(ColName), Text_Utf8)
 	End Function
 	
@@ -579,7 +579,7 @@ End Function
 		Function  = 0
 	End Function
 	
-	Function MariaDBBox.DeleteItem(Table As UString, Cond As UString) As Long
+	Function MariaDBBox.DeleteItem(Table As UStringX, Cond As UStringX) As Long
 		Function = This.DeleteItemUtf(ToUtf8(Table), ToUtf8(Cond))
 	End Function
 	
@@ -590,7 +590,7 @@ End Function
 		Dim Sql_Utf8 As String = "DELETE FROM  " & Table_Utf8 & " WHERE " & Cond_Utf8
 		Function = This.Exec(Sql_Utf8)
 	End Function
-	Function MariaDBBox.Count(Table As UString, Cond As UString = "") As Long
+	Function MariaDBBox.Count(Table As UStringX, Cond As UStringX = "") As Long
 		Function = This.CountUtf(ToUtf8(Table), ToUtf8(Cond))
 	End Function
 	Function MariaDBBox.CountUtf(Table_Utf8 As String, Cond_Utf8 As String = "") As Long
@@ -607,7 +607,7 @@ End Function
 		End If
 		EventsEn = 0
 	End Function
-	Function MariaDBBox.Sum(Table As UString, Cond As UString, ColName As UString) As LongInt
+	Function MariaDBBox.Sum(Table As UStringX, Cond As UStringX, ColName As UStringX) As LongInt
 		Function = This.SumUtf(ToUtf8(Table), ToUtf8(Cond), ToUtf8(ColName))
 	End Function
 	Function MariaDBBox.SumUtf(Table_Utf8 As String, Cond_Utf8 As String, ColName_Utf8 As String) As LongInt
@@ -624,9 +624,9 @@ End Function
 		End If
 		EventsEn = 0
 	End Function
-	Function MariaDBBox.INIGetKey(lSection As UString, lKeyName As UString, lDefault As UString = "") As UString
+	Function MariaDBBox.INIGetKey(lSection As UStringX, lKeyName As UStringX, lDefault As UStringX = "") As UStringX
 		If FMYSQL = 0 Then ErrStr = "Base not opened":This.Event_Send(12,ErrStr)  : Return ""
-		Dim rs_Utf8() As String, ot As UString, Sql_Utf8 As String
+		Dim rs_Utf8() As String, ot As UStringX, Sql_Utf8 As String
 		If Len(lSection) = 0 Then Return lDefault
 		If Len(lKeyName) = 0 Then Return lDefault
 		Dim tlKeyName As String = Replace(ToUtf8(lKeyName), "'", "''")
@@ -645,7 +645,7 @@ End Function
 		End If
 		
 	End Function
-	Function MariaDBBox.INISetKey(lSection As UString, lKeyName As UString, nValue As UString) As Boolean
+	Function MariaDBBox.INISetKey(lSection As UStringX, lKeyName As UStringX, nValue As UStringX) As Boolean
 		If FMYSQL = 0 Then ErrStr = "Base not opened" : This.Event_Send(12, ErrStr): Return False
 		Dim rs_Utf8() As String, Sql_Utf8 As String
 		If Len(lSection) = 0 Then Return False
@@ -675,7 +675,7 @@ End Function
 		Function = This.Exec(Sql_Utf8)
 		
 	End Function
-	Function MariaDBBox.MaxID(Table As UString, nField As UString, Cond As UString = "") As Long
+	Function MariaDBBox.MaxID(Table As UStringX, nField As UStringX, Cond As UStringX = "") As Long
 		Function = This.MaxIDUtf(ToUtf8(Table), ToUtf8(nField), ToUtf8(Cond))
 	End Function
 	Function MariaDBBox.MaxIDUtf(Table_Utf8 As String, nField_Utf8 As String, Cond_Utf8 As String = "") As Long
@@ -708,7 +708,7 @@ End Function
 		Function = Transaction - 3
 		Transaction = 0
 	End Function
-	Function MariaDBBox.CreateTable(Table As UString) As Long
+	Function MariaDBBox.CreateTable(Table As UStringX) As Long
 		Function = This.CreateTableUtf(ToUtf8(Table))
 	End Function
 	Function MariaDBBox.CreateTableUtf(Table_Utf8 As String) As Long
@@ -717,7 +717,7 @@ End Function
 		Dim Sql_Utf8 As String = "CREATE TABLE " & Table_Utf8 & " (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL )"
 		Function = This.Exec(Sql_Utf8)
 	End Function
-	Function MariaDBBox.AddField(Table As UString, nField As UString, nType As UString, default As UString = "", nNull As Boolean = 0) As Long
+	Function MariaDBBox.AddField(Table As UStringX, nField As UStringX, nType As UStringX, default As UStringX = "", nNull As Boolean = 0) As Long
 		If FMYSQL = 0 Then ErrStr = "Base not opened": This.Event_Send(12, ErrStr): Return -1
 		If Len(Table) = 0     Then ErrStr = "Table name is empty"  : This.Event_Send(12, ErrStr): Return -1
 		If Len(nField) = 0    Then ErrStr = "Column name is empty" : This.Event_Send(12, ErrStr): Return -1
@@ -732,7 +732,7 @@ End Function
 	Function MariaDBBox.Vacuum() As Long
 		Function = This.Exec("VACUUM")
 	End Function
-	Function MariaDBBox.CreateIndex(Table As UString, IndexName As UString, FieldList As UString, Unique As Boolean = 0) As Long
+	Function MariaDBBox.CreateIndex(Table As UStringX, IndexName As UStringX, FieldList As UStringX, Unique As Boolean = 0) As Long
 		Function = This.CreateIndexUtf(ToUtf8(Table), ToUtf8(IndexName), ToUtf8(FieldList), Unique)
 	End Function
 	Function MariaDBBox.CreateIndexUtf(Table_Utf8 As String, IndexName_Utf8 As String, FieldList_Utf8 As String, Unique As Boolean = 0) As Long

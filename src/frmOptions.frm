@@ -3531,7 +3531,7 @@ Sub frmOptions.LoadSettings()
 		Dim As String f
 		Dim As Integer Fn, Result
 		Dim Buff As WString * 2048 '
-		Dim As UString FileName
+		Dim As UStringX FileName
 		'On Error Resume Next
 		.cboDefaultProjectFile.Clear
 		f = Dir(ExePath & "/Templates/Projects/*.vfp")
@@ -3874,8 +3874,8 @@ End Function
 Sub AddShortcuts(item As MenuItem Ptr, ByRef Prefix As WString = "")
 	With fOptions
 		If StartsWith(item->Name, "Recent") OrElse item->Caption = "-" Then Exit Sub
-		Dim As UString itemCaption = Replace(IIf(Prefix = "", "", Prefix & " -> ") & item->Caption, "&", "")
-		Dim As UString itemHotKey
+		Dim As UStringX itemCaption = Replace(IIf(Prefix = "", "", Prefix & " -> ") & item->Caption, "&", "")
+		Dim As UStringX itemHotKey
 		Dim As Integer Pos1 = InStr(itemCaption, !"\t")
 		If Pos1 > 0 Then
 			itemHotKey = Mid(itemCaption, Pos1 + 1)
@@ -4059,7 +4059,7 @@ Private Sub frmOptions.cmdApply_Click(ByRef Designer As My.Sys.Object, ByRef Sen
 			_Delete(Cast(ToolType Ptr, pCompilers->Item(i)->Object))
 		Next
 		pCompilers->Clear
-		Dim As UString tempStr
+		Dim As UStringX tempStr
 		For i As Integer = 0 To .lvCompilerPaths.ListItems.Count - 1
 			tempStr = .lvCompilerPaths.ListItems.Item(i)->Text(0)
 			Tool = _New(ToolType)
@@ -4311,7 +4311,7 @@ Private Sub frmOptions.cmdApply_Click(ByRef Designer As My.Sys.Object, ByRef Sen
 			Dim As Integer Pos1, Fn = FreeFile_, Result
 			Dim As MenuItem Ptr Item
 			Dim As String Key
-			Dim As UString HotKeysPath = GetUserDataPath("Settings/Others/HotKeys.txt")
+			Dim As UStringX HotKeysPath = GetUserDataPath("Settings/Others/HotKeys.txt")
 			If HotKeysPath = "" Then Exit Sub
 			Result = Open(HotKeysPath For Output As #Fn)
 			If Result <> 0 Then
@@ -5914,7 +5914,7 @@ End Sub
 
 Dim Shared As Boolean bStop
 Dim Shared As Integer FindedCompilersCount
-Dim Shared As UString FolderName = GetFolderName(pApp->FileName)
+Dim Shared As UStringX FolderName = GetFolderName(pApp->FileName)
 Sub FindCompilers(ByRef Path As WString)
 	Dim As WString * 1024 f, f1, f2, f3
 	Dim As Integer Attr = 0, NameCount = 0
@@ -6112,10 +6112,10 @@ Private Sub frmOptions.chkCreateNonStaticEventHandlers_Click(ByRef Sender As Che
 End Sub
 
 
-Private Function UzLot(Text As UString) As UString
+Private Function UzLot(Text As UStringX) As UStringX
 	Dim As Integer Qadam
-	Dim As UString txt, Old(2), U, stat
-	Dim As UString Spravka(10000), Malumot(10000), Uzbek(100), Lotin(100)
+	Dim As UStringX txt, Old(2), U, stat
+	Dim As UStringX Spravka(10000), Malumot(10000), Uzbek(100), Lotin(100)
   Spravka(1) = "MAXSUL": Malumot(1) = "MAHSUL"
   Spravka(2) = "XARAJAT": Malumot(2) = "HARAJAT"
   Spravka(3) = "XIS": Malumot(3) = "HIS"
@@ -6135,17 +6135,17 @@ Private Function UzLot(Text As UString) As UString
   Spravka(17) = "FARK": Malumot(17) = "FARQ"
   Spravka(18) = "UZBEK": Malumot(18) = "O'ZBEK"
   Qadam = 0
-  Dim As UString Result = Text
+  Dim As UStringX Result = Text
   Dim As Integer a, b
-  Dim As UString e = Text & " "
+  Dim As UStringX e = Text & " "
   Dim As Integer p, h, j, y
-  Dim As UString R, t
+  Dim As UStringX R, t
   Var d = Len(e)
   Var w = 54
-  Dim As UString Z = "АаИиОоУуЭэЮюЯя ,.-:;`@!~#$%^&*()_+=|\?/><"
-  Dim As UString x = " `~!@#$%^&*()_+|\=-/,.<>?/"
-  Dim As UString UzbekHarf = "АаБбВвГгДдЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЪъЫыЭэЉљ" + WChr(1178) + WChr(1179) + WChr(1202) + WChr(1203) + "Е" +  "е"  + "Ё"  + "ё"  + "Ц"  + "ц"  + "Ч"  + "ч"  + "Ш"  + "ш"  + "Щ"  + "щ"  + "Ю"  + "ю"  + "Я"  + "я"  + "Њ"  + "Ў"  + "ў"  + "њ"  + WChr(1170) + WChr(1171) + "Ьь"
-  Dim As UString LotinHarf = "AaBbVvGgDdJjZzIiYyKkLlMmNnOoPpRrSsTtUuFfXxʼʼIiEeQq" + "Q"        + "q"        + "H"        + "h"        + "YE" + "ye" + "YO" + "yo" + "TS" + "ts" + "CH" + "ch" + "SH" + "sh" + "SH" + "sh" + "YU" + "yu" + "YA" + "ya" + "Oʻ" + "Oʻ" + "oʻ" + "oʻ" + "Gʻ"       + "gʻ"
+  Dim As UStringX Z = "АаИиОоУуЭэЮюЯя ,.-:;`@!~#$%^&*()_+=|\?/><"
+  Dim As UStringX x = " `~!@#$%^&*()_+|\=-/,.<>?/"
+  Dim As UStringX UzbekHarf = "АаБбВвГгДдЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЪъЫыЭэЉљ" + WChr(1178) + WChr(1179) + WChr(1202) + WChr(1203) + "Е" +  "е"  + "Ё"  + "ё"  + "Ц"  + "ц"  + "Ч"  + "ч"  + "Ш"  + "ш"  + "Щ"  + "щ"  + "Ю"  + "ю"  + "Я"  + "я"  + "Њ"  + "Ў"  + "ў"  + "њ"  + WChr(1170) + WChr(1171) + "Ьь"
+  Dim As UStringX LotinHarf = "AaBbVvGgDdJjZzIiYyKkLlMmNnOoPpRrSsTtUuFfXxʼʼIiEeQq" + "Q"        + "q"        + "H"        + "h"        + "YE" + "ye" + "YO" + "yo" + "TS" + "ts" + "CH" + "ch" + "SH" + "sh" + "SH" + "sh" + "YU" + "yu" + "YA" + "ya" + "Oʻ" + "Oʻ" + "oʻ" + "oʻ" + "Gʻ"       + "gʻ"
   txt = ""
   For i As Integer = 1 To d + 1
     Old(2) = Old(1)
@@ -6217,7 +6217,7 @@ Private Sub frmOptions.cmdUpdateLng_Click(ByRef Sender As Control)
 	Dim As WString Ptr lang_name
 	Dim As WString * 1024 Buff, FileNameLng, FileNameSrc
 	Dim As String tKey, f
-	Dim As UString tText
+	Dim As UStringX tText
 	Dim As Integer Pos1, p, p1, n, Result, Fn1, Fn2
 	Dim As Dictionary mlKeysGeneral, mlKeysCompiler, mlKeysProperty, mlKeysTemplates, mlKeyWords, mlKeysCompilerEnglish, mlKeysPropertyEnglish, mlKeysTemplatesEnglish, mlKeyWordsEnglish, mlKeysGeneralEnglish
 	Dim As Boolean StartGeneral, StartKeyWords, StartProperty, StartCompiler, StartTemplates, IsComment = False

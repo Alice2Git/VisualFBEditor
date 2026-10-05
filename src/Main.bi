@@ -110,7 +110,7 @@ Type HelpOptions
 End Type
 Common Shared As HelpOptions HelpOption
 
-Declare Function MS cdecl(ByRef V As WString, ...) As UString
+Declare Function MS cdecl(ByRef V As WString, ...) As UStringX
 Declare Function HK(Key As String, Default As String = "", WithSpace As Boolean = False) As String
 Declare Function MP(ByRef V As WString) ByRef As WString
 Declare Function MLCompilerFun(ByRef V As WString) ByRef As WString
@@ -195,27 +195,27 @@ Common Shared As WString Ptr Compiler32Arguments, Compiler64Arguments, Make1Argu
 Common Shared As Any Ptr tlock, tlockSave, tlockToDo, tlockGDB, tlockSuggestions
 
 Type Library
-	Name As UString
-	Tips As UString
-	Path As UString
-	HeadersFolder As UString
-	SourcesFolder As UString
-	IncludeFolder As UString
-	Lib32Folder As UString
-	Lib64Folder As UString
-	Lib64ArmFolder As UString
-	LibX32Folder As UString
-	LibX64Folder As UString
+	Name As UStringX
+	Tips As UStringX
+	Path As UStringX
+	HeadersFolder As UStringX
+	SourcesFolder As UStringX
+	IncludeFolder As UStringX
+	Lib32Folder As UStringX
+	Lib64Folder As UStringX
+	Lib64ArmFolder As UStringX
+	LibX32Folder As UStringX
+	LibX64Folder As UStringX
 	Enabled As Boolean
 	Handle As Any Ptr
 End Type
 
 Type ToolType
-	Name As UString
-	Path As UString
-	Parameters As UString
-	Extensions As UString
-	Declare Function GetCommand(ByRef FileName As WString = "", WithoutProgram As Boolean = False) As UString
+	Name As UStringX
+	Path As UStringX
+	Parameters As UStringX
+	Extensions As UStringX
+	Declare Function GetCommand(ByRef FileName As WString = "", WithoutProgram As Boolean = False) As UStringX
 End Type
 
 Type ModelInfo
@@ -233,7 +233,7 @@ Type ModelInfo
 	Response_Format As String 'json_object
 End Type
 'Type FileType
-'	FileName As UString
+'	FileName As UStringX
 '	DateChanged As Double
 '	Includes As WStringList
 '	IncludeLines As IntegerList
@@ -311,9 +311,9 @@ Declare Sub ChangeNewLineType(NewLineType As NewLineTypes)
 	Declare Sub TimerProc()
 #endif
 Declare Function WithoutPointers(ByRef e As String) As String
-Declare Function WithoutQuotes(ByRef e As UString) As UString
+Declare Function WithoutQuotes(ByRef e As UStringX) As UStringX
 Declare Sub ChangeFolderType(Value As ProjectFolderTypes)
-Declare Function FolderCopy(FromDir As UString, ToDir As UString) As Integer
+Declare Function FolderCopy(FromDir As UStringX, ToDir As UStringX) As Integer
 Declare Sub Save
 Declare Function SaveAllBeforeCompile() As Boolean
 Declare Function SaveSession(WithoutQuestion As Boolean = False) As Boolean
@@ -330,25 +330,25 @@ Declare Sub FormatProject(UnFormat As Any Ptr)
 Declare Sub SetSaveDialogParameters(ByRef FileName As WString)
 Declare Function IfNegative(Value As Integer, NonNegative As Integer) As Integer
 Declare Function GetChangedCommas(ByRef Value As WString, FromSecond As Boolean = False) As String
-Declare Function GetFileName(ByRef FileName As WString, WithExtension As Boolean = True) As UString
-Declare Function GetExeFileName(ByRef FileName As WString, ByRef sLine As WString) As UString
-Declare Function GetBakFileName(ByRef FileName As WString) As UString
-Declare Function GetShortFileName(ByRef FileName As WString, ByRef FilePath As WString) As UString
-Declare Function GetFolderName(ByRef FileName As WString, WithSlash As Boolean = True) As UString
-Declare Function GetOSPath(ByRef Path As WString) As UString
-Declare Function GetFullPathInSystem(ByRef Path As WString) As UString
-Declare Function GetFullPath(ByRef Path As WString, ByRef FromFile As WString = "") As UString
-Declare Function GetRelative(ByRef FileName As WString, ByRef FromFile As WString) As UString
-Declare Function GetRelativePath(ByRef Path As WString, ByRef FromFile As WString = "") As UString
-Declare Function GetSpecialPath(ByRef key As WString) As UString
+Declare Function GetFileName(ByRef FileName As WString, WithExtension As Boolean = True) As UStringX
+Declare Function GetExeFileName(ByRef FileName As WString, ByRef sLine As WString) As UStringX
+Declare Function GetBakFileName(ByRef FileName As WString) As UStringX
+Declare Function GetShortFileName(ByRef FileName As WString, ByRef FilePath As WString) As UStringX
+Declare Function GetFolderName(ByRef FileName As WString, WithSlash As Boolean = True) As UStringX
+Declare Function GetOSPath(ByRef Path As WString) As UStringX
+Declare Function GetFullPathInSystem(ByRef Path As WString) As UStringX
+Declare Function GetFullPath(ByRef Path As WString, ByRef FromFile As WString = "") As UStringX
+Declare Function GetRelative(ByRef FileName As WString, ByRef FromFile As WString) As UStringX
+Declare Function GetRelativePath(ByRef Path As WString, ByRef FromFile As WString = "") As UStringX
+Declare Function GetSpecialPath(ByRef key As WString) As UStringX
 Declare Function EnsureFolderExists(ByRef FolderName As WString) As Boolean
 Declare Function CopyFileToPath(ByRef SourcePath As WString, ByRef DestinationPath As WString) As Boolean
-Declare Function GetUserDataPath(ByRef RelativePath As WString = "") As UString
-Declare Function GetUserDocumentsPath(ByRef RelativePath As WString = "") As UString
-Declare Function GetUserTempPath(ByRef RelativePath As WString = "") As UString
-Declare Function GetAIChatDirectory() As UString
-Declare Function GetUserChangeLogPath(ByRef FileName As WString) As UString
-Declare Function GetUserThemePath(ByRef ThemeName As WString, IsInterfaceTheme As Boolean = False) As UString
+Declare Function GetUserDataPath(ByRef RelativePath As WString = "") As UStringX
+Declare Function GetUserDocumentsPath(ByRef RelativePath As WString = "") As UStringX
+Declare Function GetUserTempPath(ByRef RelativePath As WString = "") As UStringX
+Declare Function GetAIChatDirectory() As UStringX
+Declare Function GetUserChangeLogPath(ByRef FileName As WString) As UStringX
+Declare Function GetUserThemePath(ByRef ThemeName As WString, IsInterfaceTheme As Boolean = False) As UStringX
 Declare Function GetXY(XorY As Integer) As Integer
 #ifndef __USE_GTK__
 	Declare Function FileTimeToVariantTime(ByRef FT As FILETIME) As DATE_

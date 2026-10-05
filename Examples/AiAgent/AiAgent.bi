@@ -30,7 +30,7 @@ Private Function DirToComlst(ByRef cbo As ComboBoxEdit, ByRef path As WString, B
 	Function = r
 End Function
 
-Private Function TextFromComlst(ByRef cob As ComboBoxEdit, ByRef spt As WString, ByVal withtext As Boolean = False) As UString
+Private Function TextFromComlst(ByRef cob As ComboBoxEdit, ByRef spt As WString, ByVal withtext As Boolean = False) As UStringX
 	Dim As Integer i, j = cob.ItemCount - 1, k
 	Dim As WString Ptr s, ss()
 	
@@ -81,7 +81,7 @@ Private Sub TextToComlst(ByRef cob As ComboBoxEdit, ByRef txt As WString, ByRef 
 	ArrayDeallocate(ss())
 End Sub
 
-Function WStr2Json(ByRef iText As WString) As UString
+Function WStr2Json(ByRef iText As WString) As UStringX
 	Dim As WString Ptr result
 	
 	WLet(result, iText)
@@ -95,7 +95,7 @@ Function WStr2Json(ByRef iText As WString) As UString
 	Deallocate result
 End Function
 
-Function Json2WStr(ByRef iText As WString) As UString
+Function Json2WStr(ByRef iText As WString) As UStringX
 	Dim As WString Ptr result
 	
 	WLet(result, iText)

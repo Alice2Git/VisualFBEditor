@@ -190,10 +190,10 @@ Namespace My.Sys.Forms
 		EnumTypeName As String
 		TypeName As String
 		InCondition As String
-		Value As UString
+		Value As UStringX
 		ElementType As ElementTypes
-		Parameters As UString
-		Comment As UString
+		Parameters As UStringX
+		Comment As UStringX
 		FileName As WString * MAX_PATH
 		IncludeFile As WString * MAX_PATH
 		TypeIsPointer As Boolean

@@ -3831,7 +3831,7 @@ runtype = RTOFF
 		Dim As CONSOLE_SCREEN_BUFFER_INFO csbi
 		Dim As SMALL_RECT disparea=Type(0,0,0,0)
 		Dim As Short maxcoordysav
-		Dim As UString LogPath
+		Dim As UStringX LogPath
 		Dim As Integer OpenResult
 		If t=" $$$$___CLOSE ALL___$$$$ " Then
 			If scrnnumber<>0 And (flaglog And 1)=0 Then FreeConsole():scrnnumber=0
@@ -6045,7 +6045,7 @@ Private Sub dbg_include(strg As String)
 	If InStr(strg, Any "/\") = 0 Then ''just the name no path Then
 		Dim As ProjectElement Ptr Project
 		Dim As TreeNode Ptr ProjectNode
-		Dim As UString MainFile = GetMainFile(False, Project, ProjectNode)
+		Dim As UStringX MainFile = GetMainFile(False, Project, ProjectNode)
 		strg = Left(MainFile, InStrRev(MainFile, Any "/\")) + strg ''adding path
 		'strg=Left(source(0),InStrRev(source(0),Any "/\"))+strg ''adding path
 	End If
@@ -6872,7 +6872,7 @@ End Function
 		End If
 	End Sub
 	
-	Function get_sh(i As Integer) As UString
+	Function get_sh(i As Integer) As UStringX
 		Static As Byte wrapflag, buf(32004)
 		var_fill(i)
 		
@@ -8650,7 +8650,7 @@ End Sub
 		Next
 	End Sub
 	
-	Function GetDWFileName(ByRef dwln As WString) As UString
+	Function GetDWFileName(ByRef dwln As WString) As UStringX
 		Dim As WString * 300 fullname
 		Dim As Integer p = InStr(dwln, ".b"), ladr, linenu
 		If p = 0 Then p = InStr(dwln, ".B")
@@ -8734,7 +8734,7 @@ End Sub
 		dissas_command=""""""+ExePath+"\objdump.exe"" --dwarf=decodedline """+nfile+"""""" '19/04/2015  (by marpon)
 		dwff = FreeFile_
 		counter=Open Pipe( dissas_command For Input As #dwff)
-		Dim As UString LastPath, LastFolder
+		Dim As UStringX LastPath, LastFolder
 		Do Until EOF(dwff)
 			Line Input #dwff, dwln
 			If flagline=0 Then
@@ -10329,7 +10329,7 @@ Private Function var_sh1(i As Integer) As String '23/04/2014
 			End If
 			#ifdef __USE_WINAPI__
 				If InStr(text, "Ushort") > 0 Then
-					Dim As UString result = get_sh(i)
+					Dim As UStringX result = get_sh(i)
 					If Len(result) > 75 Then
 						result = Left(result, 75) & "..."
 					End If
@@ -10365,7 +10365,7 @@ Private Function var_sh1(i As Integer) As String '23/04/2014
 			text += var_sh2(.typ, adr, .pt, soffset, .fxlen)
 			#ifdef __USE_WINAPI__
 				If InStr(text, "Ushort") > 0 Then
-					Dim As UString result = get_sh(i)
+					Dim As UStringX result = get_sh(i)
 					If Len(result) > 75 Then
 						result = Left(result, 75) & "..."
 					End If
@@ -12855,7 +12855,7 @@ End Sub
 			#define BufferSize 2048
 			Dim As Integer Count
 			Dim sBuffer As ZString * BufferSize
-			Dim sOutput As UString
+			Dim sOutput As UStringX
 			Dim bytesRead As DWORD
 			Dim result_ As Integer
 			Dim s As String = ""
@@ -13762,7 +13762,7 @@ End Sub
 		
 		lvThreads.Nodes.Clear
 		
-		Dim As UString res()
+		Dim As UStringX res()
 		
 		#ifdef __USE_GTK__
 			Split(sBuf, Chr(10), res())
@@ -15119,8 +15119,8 @@ Sub RunWithDebug(Debugger As String = "", ByRef ProjectFileName As WString, ByRe
 	ThreadsEnter()
 	'Dim As ProjectElement Ptr Project
 	'Dim As TreeNode Ptr ProjectNode
-	'Dim As UString CompileLine, MainFile = GetMainFile(, Project, ProjectNode)
-	'Dim As UString FirstLine = GetFirstCompileLine(MainFile, Project, CompileLine)
+	'Dim As UStringX CompileLine, MainFile = GetMainFile(, Project, ProjectNode)
+	'Dim As UStringX FirstLine = GetFirstCompileLine(MainFile, Project, CompileLine)
 	ThreadsLeave()
 	If Not Restarting Then
 		'#IfNDef __USE_GTK__
@@ -15154,7 +15154,7 @@ Sub RunWithDebug(Debugger As String = "", ByRef ProjectFileName As WString, ByRe
 		If WGet(DebuggerPath) <> "" AndAlso runtype <> RTSTEP AndAlso InStr(LCase(WGet(DebuggerPath)), "gdb") > 0 Then
 	'#endif
 		Dim As Integer Fn = FreeFile_
-		Dim As UString GDBCommandsPath = GetUserTempPath("GDBCommands.txt")
+		Dim As UStringX GDBCommandsPath = GetUserTempPath("GDBCommands.txt")
 		If GDBCommandsPath = "" Then Exit Sub
 		If Open(GDBCommandsPath For Output As #Fn) <> 0 Then
 			MsgBox "Unable to create GDB command file: " & GDBCommandsPath
@@ -15224,7 +15224,7 @@ Sub RunWithDebug(Debugger As String = "", ByRef ProjectFileName As WString, ByRe
 			Shell """" & WGet(TerminalPath) & """ --wait -- """ & build_create_shellscript(GetFolderName(exename), exename, False, True) & """"
 		Else
 			ChDir(GetFolderName(exename))
-			Dim As UString CommandLine
+			Dim As UStringX CommandLine
 			Dim As ToolType Ptr Tool
 			Dim As Integer Idx = pTerminals->IndexOfKey(*CurrentTerminal)
 			If Idx <> - 1 Then
@@ -15399,8 +15399,8 @@ End Sub
 Sub RunProgramWithDebug(Param As Any Ptr)
 	Dim As ProjectElement Ptr Project
 	Dim As TreeNode Ptr ProjectNode
-	Dim As UString CompileLine, MainFile = GetMainFile(, Project, ProjectNode)
-	Dim As UString FirstLine = GetFirstCompileLine(MainFile, Project, CompileLine)
+	Dim As UStringX CompileLine, MainFile = GetMainFile(, Project, ProjectNode)
+	Dim As UStringX FirstLine = GetFirstCompileLine(MainFile, Project, CompileLine)
 	If Project <> 0 Then
 		RunWithDebug , *Project->FileName, *Project->CommandLineArguments, MainFile, CompileLine, FirstLine
 	Else

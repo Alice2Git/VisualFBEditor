@@ -249,7 +249,7 @@ Private Sub frmMenuEditor.Form_Paint(ByRef Sender As Control, ByRef Canvas As My
 						End Select
 						If ImagesListHandle <> 0 Then
 							Dim As Any Ptr Image
-							Dim As UString ImageKey = WGet(stCurrentToolBar->ReadPropertyFunc(Ctrls(RectsCount), "ImageKey"))
+							Dim As UStringX ImageKey = WGet(stCurrentToolBar->ReadPropertyFunc(Ctrls(RectsCount), "ImageKey"))
 							Dim As Integer ImageIndex = QInteger(stCurrentToolBar->ReadPropertyFunc(Ctrls(RectsCount), "ImageIndex"))
 							Dim As SymbolsType Ptr st = Des->Symbols(ImagesList)
 							If ImageKey <> "" AndAlso st <> 0 AndAlso st->ImageListIndexOfFunc <> 0 Then ImageIndex = st->ImageListIndexOfFunc(ImagesList, ImageKey)
@@ -582,7 +582,7 @@ Sub frmMenuEditor.EditRect(i As Integer, NewObject As Boolean)
 					If Des->OnInsertingControl Then
 						Des->OnInsertingControl(*Des, FName, FName)
 					End If
-					Dim As UString FCaption = FName
+					Dim As UStringX FCaption = FName
 					Dim Obj As Any Ptr = Des->CreateObject("ToolButton")
 					st->WritePropertyFunc(Obj, "Name", FCaption.vptr)
 					st->WritePropertyFunc(Obj, "Parent", CurrentToolBar)
@@ -610,7 +610,7 @@ Sub frmMenuEditor.EditRect(i As Integer, NewObject As Boolean)
 					If Des->OnInsertingControl Then
 						Des->OnInsertingControl(*Des, FName, FName)
 					End If
-					Dim As UString FCaption = FName
+					Dim As UStringX FCaption = FName
 					Dim Obj As Any Ptr = Des->CreateObject("StatusPanel")
 					st->WritePropertyFunc(Obj, "Name", FCaption.vptr)
 					st->WritePropertyFunc(Obj, "Parent", CurrentStatusBar)
@@ -637,7 +637,7 @@ Sub frmMenuEditor.EditRect(i As Integer, NewObject As Boolean)
 					If Des->OnInsertingControl Then
 						Des->OnInsertingControl(*Des, FName, FName)
 					End If
-					Dim As UString FCaption = FName
+					Dim As UStringX FCaption = FName
 					Dim Obj As Any Ptr = Des->CreateObject("MenuItem")
 					st->WritePropertyFunc(Obj, "Name", FCaption.vptr)
 					If Parents(i) = 0 Then

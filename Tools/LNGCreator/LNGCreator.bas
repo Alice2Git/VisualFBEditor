@@ -182,7 +182,7 @@
 	#endif
 '#End Region
 
-Function GetFolderName(ByRef FileName As WString, WithSlash As Boolean = True) As UString
+Function GetFolderName(ByRef FileName As WString, WithSlash As Boolean = True) As UStringX
 	Dim Pos1 As Long = InStrRev(FileName, "\", Len(FileName) - 1)
 	Dim Pos2 As Long = InStrRev(FileName, "/", Len(FileName) - 1)
 	If Pos1 = 0 OrElse Pos2 > Pos1 Then Pos1 = Pos2

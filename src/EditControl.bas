@@ -1210,7 +1210,7 @@ Namespace My.Sys.Forms
 		'	Delete_(Cast(EditControlStatement Ptr, ecl->Statements.Item(ii)))
 		'Next
 		'ecl->Statements.Clear
-		'Dim As UString LineText_
+		'Dim As UStringX LineText_
 		''If LineText <> "" Then
 		''	LineText_ = LineText
 		''Else
@@ -1218,7 +1218,7 @@ Namespace My.Sys.Forms
 		''End If
 		'Dim As Boolean Collapsible
 		'Dim As List Statements
-		'Dim As UString res()
+		'Dim As UStringX res()
 		'Split(LineText_, ":", res())
 		'Dim As EditControlStatement Ptr ecs, ecs_, ecsOld_
 		'For ii As Integer = 0 To UBound(res)
